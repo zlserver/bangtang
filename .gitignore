@@ -1,0 +1,7 @@
+/target/
+/EclipseWorkspace/
+/.settings
+.classpath
+.project
+/bin/
+/logs/

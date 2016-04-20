@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!--1、在mapper.xml中namespace等于mapper接口地址 
+   	2、mapper.java接口中的方法名和mapper.xml中statement的id一致
+ 	3、mapper.java接口中的方法输入参数类型和mapper.xml中statement的parameterType指定的类型一致。
+	4、mapper.java接口中的方法返回值类型和mapper.xml中statement的resultType指定的类型一致。
+-->
+ <mapper namespace="com.yysj.bangtang.mapper.EmployeeMapper">
+  
+   <select id="findByAccount" parameterType="string" resultType="employee">
+		SELECT * FROM Employee WHERE account=#{account}
+	</select>
+	<update id="updateState" parameterType="employee">
+	    Update Employee set state=#{state} where account=#{account}
+	</update>
+	<insert id="insertEmployee" parameterType="employee">
+	    Insert into Employee(account,password,state,gender) values(#{account},#{password},#{state},#{gender});
+	</insert>
+</mapper> 

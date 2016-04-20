@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!--1、在mapper.xml中namespace等于mapper接口地址 
+   	2、mapper.java接口中的方法名和mapper.xml中statement的id一致
+ 	3、mapper.java接口中的方法输入参数类型和mapper.xml中statement的parameterType指定的类型一致。
+	4、mapper.java接口中的方法返回值类型和mapper.xml中statement的resultType指定的类型一致。
+-->
+ <mapper namespace="com.yysj.bangtang.mapper.ClientMapper">
+     <!-- 开启本mapper的namespace下的二级缓存
+     type :指定cache接口的实现类型，mybatis默认使用PerpetualCache，要和ehcache整合，
+     需要配置type为ehcache实现cache接口类型。
+     -->
+    <!--  <cache type="org.mybatis.caches.ehcache.EhcacheCache" /> -->
+   <select id="findByEmail" parameterType="string" resultType="client">
+		SELECT * FROM Client WHERE email=#{value}
+	</select>
+	<update id="updateClient" parameterType="client">
+	    Update Client set nickName=#{nickName} where email=#{email}
+	</update>
+</mapper> 
