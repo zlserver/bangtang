@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</script>
 
 	</head>
-	<body bgcolor="#CCCCCC">
+<body bgcolor="#CCCCCC">
 <div id="main">
 <ul id="browser" class="filetree">
 <li><img src="../images/folder.gif" /> hello word</span>

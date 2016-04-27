@@ -7,6 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<base href="<%=basePath %>" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
 <style>
@@ -40,7 +41,7 @@ function checkUser()
 			return false;
 		}
 		else
-		{window.location.href="menu/main.html";return true;
+		{window.location.href="admincenter/main.html";return true;
 			}
 	}
 	else{
@@ -60,6 +61,8 @@ function checkUser()
 </table>
 </div>
 <div id="main" class="two">
+<form action="control/admin/login.html" method="post"  onsubmit="return checkUser()">
+
   <table width="500" height="480" border="0" align="center"  >
      <tr>
       <td width="200" align="center">&nbsp;</td>
@@ -68,17 +71,18 @@ function checkUser()
     <tr>
 	
       <td width="200" align="center"><font size="+3"><strong>账号：</strong></font></td>
-      <td width="300"><input type="text" id="login"  style="widows:300px; height:25px"/></td>
+      <td width="300"><input type="text" id="login"   name="employee.account"  style="widows:300px; height:25px"/></td>
     </tr>
     <tr>
       <td width="200" align="center"><font size="+3"><strong>密码：</strong></font></td>
-      <td width="300"><input type="text" id="password"  style="widows:300px; height:25px"/></td>
+      <td width="300"><input type="password" id="password" name="employee.password"  style="widows:300px; height:25px"/></td>
     </tr>
     <tr>
       <td></td>
-      <td align="right"><input type="button" onclick="checkUser()" id="Login" align="middle" value="登录" class="button"/></td>
+      <td align="right"><input type="submit"  id="Login" align="middle" value="登录" class="button"/></td>
     </tr>
   </table>
+ </form>
 </div>
 <div class="three">北京悠游视记股份有限公司www.wordslollipop.com</div>
 </body>
