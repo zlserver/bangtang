@@ -12,15 +12,15 @@ import com.yysj.bangtang.bean.Client;
 public class ClientMapperTest {
 	private static SqlSessionFactory sqlSessionFactory;
 	private static ApplicationContext ac;
-	@Before
+	/*@Before
 	public void init(){
 		 ac = new ClassPathXmlApplicationContext("bt-service.xml");
 		 sqlSessionFactory= ac.getBean(SqlSessionFactory.class);
 	}
 	
-	/**
+	*//**
 	 * 测试通过mapper方式来实现dao层接口
-	 */
+	 *//*
 	@Test
 	public void findByEmail(){
 		ClientMapper cm =ac.getBean(ClientMapper.class);
@@ -29,9 +29,9 @@ public class ClientMapperTest {
 		c =cm.findByEmail("594389970@qq.com");
 		System.out.println(c.getEmail()+":"+c.getNickName());
 	}
-	/**
+	*//**
 	 * 测试一级缓存
-	 */
+	 *//*
 	@Test
 	public void testFirstCache(){
 	 SqlSession sqlSession=	sqlSessionFactory.openSession();
@@ -49,11 +49,11 @@ public class ClientMapperTest {
 		sqlSession.close();
 	}
 	
-	/**
+	*//**
 	 * 测试二级缓存
 	 * 没有开启二级缓存的话3次查询都会访问数据库，
 	 * 开启二级缓存的话，只有1，3次查询操作会访问数据库。
-	 */
+	 *//*
 	@Test
 	public void testSecondCache(){
 
@@ -87,5 +87,5 @@ public class ClientMapperTest {
 			System.out.println(c3.getEmail()+":"+c3.getNickName());
 			//关闭操作，将sqlSession中的数据写到二级缓存区域
 			sqlSession3.close();
-	}
+	}*/
 }
