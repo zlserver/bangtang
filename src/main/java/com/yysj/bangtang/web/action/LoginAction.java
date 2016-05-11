@@ -42,7 +42,6 @@ public class LoginAction {
 		request.setAttribute("vo", vo);
 		return SiteUtils.getSite("admin.login");
 	}
-
 	public EmployeeService getEmployeeService() {
 		return employeeService;
 	}

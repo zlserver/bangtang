@@ -7,6 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE html>
 
 	<head>
+	<base href="<%=basePath %>" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>jQuery</title>
 	<link rel="stylesheet" href="../lib/jquery.treeview.css" />
