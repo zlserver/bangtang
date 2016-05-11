@@ -41,7 +41,7 @@ function checkUser()
 			return false;
 		}
 		else
-		{window.location.href="admincenter/main.html";return true;
+		{window.location.href="admincenter/main.action";return true;
 			}
 	}
 	else{
@@ -61,7 +61,7 @@ function checkUser()
 </table>
 </div>
 <div id="main" class="two">
-<form action="control/admin/login.html" method="post"  onsubmit="return checkUser()">
+<form action="common/admin/login.action" method="post"  onsubmit="return checkUser()">
 
   <table width="500" height="480" border="0" align="center"  >
      <tr>
