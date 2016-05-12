@@ -22,7 +22,7 @@ public class EmployeeVo extends BaseVo {
 		boolean flage = true;
 		if(!validateLen(employee.getAccount(),3,20)||!validateLen(employee.getPassword(), 3, 20))
 		{
-			this.getResult().put("error", "账号或密码有误!");//账号长度在3-20之间!
+			this.getError().put("error", "账号或密码有误!");//账号长度在3-20之间!
 			flage = false;
 		}
 	

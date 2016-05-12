@@ -18,7 +18,7 @@ public class EmployeeLoginAction {
 	private EmployeeService employeeService;
 	@RequestMapping(value="loginUi")
 	public String loginUi(){
-		return SiteUtils.getSite("admin.login");
+		return SiteUtils.getPage("admin.login");
 	}
 	@RequestMapping(value="login")
 	public String login(EmployeeVo vo, HttpServletRequest request){
@@ -35,11 +35,11 @@ public class EmployeeLoginAction {
 			
 			}
 			// 3.用户名或者密码有误
-			vo.getResult().put("account", "用户名或者密码有误!");
+			vo.getError().put("account", "用户名或者密码有误!");
 		}
 		// 登录出错返回
 		request.setAttribute("vo", vo);
-		return SiteUtils.getSite("admin.login");
+		return SiteUtils.getPage("admin.login");
 	}
 	public EmployeeService getEmployeeService() {
 		return employeeService;

@@ -19,11 +19,12 @@ public interface ClientService {
 	 */
 	public Client login(String email,String password);
 	/**
-	 * 添加用户
-	 * @param client
+	 * 注册用户
+	 * @param email 邮箱
+	 * @param password 密码
 	 * @return
 	 */
-	public void registerClient(ClientCustom client);
+	public void registerByEmail(String email,String password);
 	/**
 	 * 更改用户的状态
 	 * @param eamil 用户邮箱

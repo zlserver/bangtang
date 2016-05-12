@@ -7,13 +7,14 @@ public class BaseVo {
 	/**
 	 * 存放表单校验后的结果
 	 */
-	private Map<String,String> result=new HashMap<String,String>();
+	private Map<String,String> error=new HashMap<String,String>();
 	
-	public Map<String, String> getResult() {
-		return result;
+	
+	public Map<String, String> getError() {
+		return error;
 	}
-	public void setResult(Map<String, String> result) {
-		this.result = result;
+	public void setError(Map<String, String> error) {
+		this.error = error;
 	}
 	/**
 	 * 判断是否是有效字符串。null、空字符串、空格字符串都是无效字符串；
