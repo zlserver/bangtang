@@ -26,9 +26,16 @@
      <mybatis-ehcache.version>1.0.0</mybatis-ehcache.version>
      <ehcache.version>2.10.0</ehcache.version>
      <jsr250.version>1.0</jsr250.version> <!-- JSR-250注解 -->
+      <json.version>2.4</json.version>
   </properties>
   <dependencies>
-  
+   <!-- json格式依赖jar -->
+	<dependency>
+		<groupId>net.sf.json-lib</groupId>
+		<artifactId>json-lib</artifactId>
+		<version>${json.version}</version>
+		<classifier>jdk15</classifier>
+	</dependency>
    <!-- 使用JSR-250生命周期注解@Resouce @PostConstruct和@PreDestroy注解bean的初始化和析构回调方法 -->
         <dependency>
 	       	<groupId>javax.annotation</groupId>

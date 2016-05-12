@@ -50,7 +50,7 @@ public class SiteUtils {
 	 * @param key 网页路径的key值，admin.controlcenter
 	 * @return key值对应的路径，比如：admincenter/main
 	 */
-	public static String getSite(String key){
+	public static String getPage(String key){
 		
 		if( properties.containsKey(key)){
 			return (String) properties.get(key);

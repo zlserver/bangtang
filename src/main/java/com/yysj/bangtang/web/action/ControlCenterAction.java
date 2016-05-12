@@ -17,19 +17,19 @@ public class ControlCenterAction {
 	@RequestMapping(value="main")
 	public String center(){
 		
-		return SiteUtils.getSite("admin.controlcenter");
+		return SiteUtils.getPage("admin.controlcenter");
 	}
 	@RequestMapping(value="top",method=RequestMethod.GET)
 	public String top(){
-		return SiteUtils.getSite("center.top");
+		return SiteUtils.getPage("center.top");
 	}
 	@RequestMapping(value="left")
 	public String left(){
-		return SiteUtils.getSite("center.left");
+		return SiteUtils.getPage("center.left");
 	}
 	@RequestMapping(value="content")
 	public String content(){
-		return SiteUtils.getSite("center.content");
+		return SiteUtils.getPage("center.content");
 	}
 	
 }
