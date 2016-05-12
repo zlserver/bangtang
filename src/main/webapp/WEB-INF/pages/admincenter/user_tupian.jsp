@@ -9,23 +9,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 <base href="<%=basePath %>" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
-<style type="text/css">
-body,td,th {
-	font-size: 36px;
-	color: #000;
-}
-body {
-	background-color: #0F0;
-	margin-left: 0%;
-	margin-top: 40px;
-}
-</style>
+<title>user_picture</title>
+<link rel="stylesheet" type="text/css" href="../lib/shipin_class.css" />
 </head>
-
 <body>
-<div align="center">
-<h2>
-单词棒棒糖后台管理界面</h2>
-</div></body>
+<div class="shipin_class">图片
+</div>
+</body>
 </html>
+

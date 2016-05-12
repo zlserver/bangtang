@@ -12,14 +12,12 @@ import com.yysj.bangtang.utils.SiteUtils;
 import com.yysj.bangtang.vo.EmployeeVo;
 
 @Controller
-@RequestMapping(value="/control/admin/*")
-public class LoginAction {
+@RequestMapping(value="/common/admin/*")
+public class EmployeeLoginAction {
 	                        
 	private EmployeeService employeeService;
 	@RequestMapping(value="loginUi")
 	public String loginUi(){
-		System.out.println("登陆界面");
-
 		return SiteUtils.getSite("admin.login");
 	}
 	@RequestMapping(value="login")
@@ -33,7 +31,8 @@ public class LoginAction {
 			if (em != null) {
 				// 4.登录成功
 				request.getSession().setAttribute("employee", em);
-				return SiteUtils.getSite("admin.controlcenter");
+				return "redirect:/control/center/main.action";
+			
 			}
 			// 3.用户名或者密码有误
 			vo.getResult().put("account", "用户名或者密码有误!");
@@ -42,7 +41,6 @@ public class LoginAction {
 		request.setAttribute("vo", vo);
 		return SiteUtils.getSite("admin.login");
 	}
-
 	public EmployeeService getEmployeeService() {
 		return employeeService;
 	}

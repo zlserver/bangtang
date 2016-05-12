@@ -7,9 +7,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.yysj.bangtang.utils.SiteUtils;
 
 @Controller
-@RequestMapping(value="/control/center/")
+@RequestMapping(value="/control/center/*")
 public class ControlCenterAction {
 
+	/**
+	 * 控制中心
+	 * @return
+	 */
+	@RequestMapping(value="main")
+	public String center(){
+		
+		return SiteUtils.getSite("admin.controlcenter");
+	}
 	@RequestMapping(value="top",method=RequestMethod.GET)
 	public String top(){
 		return SiteUtils.getSite("center.top");

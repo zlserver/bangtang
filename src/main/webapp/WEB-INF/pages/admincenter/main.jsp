@@ -19,10 +19,10 @@ function set_content(){
 </script>
 </head>
 <frameset rows="120,*" cols="*" frameborder="no" border="0" framespacing="0">
-	<frame src="control/admin/loginUi.html" name="topFrame" scrolling="no"  id="topFrame" title="topFrame" />
+	<frame src="common/admin/loginUi.action" name="topFrame" scrolling="no"  id="topFrame" title="topFrame" />
 	<frameset cols="220,*" frameborder="no" border="0" framespacing="0">
-		<frame src="control/center/left.html" name="leftFrame" scrolling="yes" id="leftFrame" title="leftFrame" />
-		<frame src="control/center/content.html" name="mainFrame" id="mainFrame" title="mainFrame"  scrolling="yes"/>
+		<frame src="control/center/left.action" name="leftFrame" scrolling="yes" id="leftFrame" title="leftFrame" />
+		<frame src="control/center/content.action" name="mainFrame" id="mainFrame" title="mainFrame"  scrolling="yes"/>
 	</frameset>
 </frameset>
 <noframes>
