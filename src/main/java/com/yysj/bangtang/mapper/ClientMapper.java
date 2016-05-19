@@ -1,18 +1,30 @@
 package com.yysj.bangtang.mapper;
 
 import com.yysj.bangtang.bean.Client;
+import com.yysj.bangtang.bean.ClientExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface ClientMapper {
+    int countByExample(ClientExample example);
 
-	/**
-	 * 根据邮箱查询用户
-	 * @param email
-	 * @return
-	 */
-	public Client findByEmail(String email);
-	/**
-	 * 更新用户
-	 * @param client
-	 */
-	public void updateClient(Client client);
+    int deleteByExample(ClientExample example);
+
+    int deleteByPrimaryKey(String email);
+
+    int insert(Client record);
+
+    int insertSelective(Client record);
+
+    List<Client> selectByExample(ClientExample example);
+
+    Client selectByPrimaryKey(String email);
+
+    int updateByExampleSelective(@Param("record") Client record, @Param("example") ClientExample example);
+
+    int updateByExample(@Param("record") Client record, @Param("example") ClientExample example);
+
+    int updateByPrimaryKeySelective(Client record);
+
+    int updateByPrimaryKey(Client record);
 }
