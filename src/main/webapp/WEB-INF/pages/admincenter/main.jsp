@@ -20,7 +20,7 @@ function set_content(){
 </head>
 <frameset rows="120,*" cols="*" frameborder="no" border="0" framespacing="0">
 	<frame src="common/admin/loginUi.action" name="topFrame" scrolling="no"  id="topFrame" title="topFrame" />
-	<frameset cols="220,*" frameborder="no" border="0" framespacing="0">
+	<frameset cols="300,*" frameborder="no" border="0" framespacing="0">
 		<frame src="control/center/left.action" name="leftFrame" scrolling="yes" id="leftFrame" title="leftFrame" />
 		<frame src="control/center/content.action" name="mainFrame" id="mainFrame" title="mainFrame"  scrolling="yes"/>
 	</frameset>

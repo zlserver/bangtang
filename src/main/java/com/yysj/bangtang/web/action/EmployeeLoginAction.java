@@ -14,7 +14,6 @@ import com.yysj.bangtang.vo.EmployeeVo;
 @Controller
 @RequestMapping(value="/common/admin/*")
 public class EmployeeLoginAction {
-	                        
 	private EmployeeService employeeService;
 	@RequestMapping(value="loginUi")
 	public String loginUi(){
