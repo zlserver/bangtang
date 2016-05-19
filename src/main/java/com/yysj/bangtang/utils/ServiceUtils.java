@@ -1,30 +1,62 @@
 package com.yysj.bangtang.utils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.security.MessageDigest;
+
+import org.apache.commons.beanutils.BeanUtils;
+
+
 public class ServiceUtils {
-	/**
-	 * 判断是否是有效字符串。null、空字符串、空格字符串都是无效字符串；
-	 * 无效字符串返回false,有效返回true
-	 * @param str
-	 * @return
-	 */
-	public static boolean validateStr(String str) {
-		if( null ==str || "".equals(str.trim())){
-			return false;
+	//16进制字符
+		private final static String[] hexDigits = { "0", "1", "2", "3", "4", "5",
+				"6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+		/**
+		 * 的MD5编码，以防出现“=”号
+		 * @param origin 源数据
+		 * @return MD5数据，不含有"="可以放在连接路径中以防产生错误参数
+		 */
+		public static String MD5Encode(String origin) {
+			String resultString = null;
+
+			try {
+				resultString = new String(origin);
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				resultString = byteArrayToHexString(md.digest(resultString
+						.getBytes()));
+			} catch (Exception ex) {
+
+			}
+			return resultString;
 		}
-		return true;
-	}
-	/**
-	 * 校验字符串str的有效长度不小于min且不大于max。
-	 * @param str,字符串，如果str两端有空格会去掉然后进行判断
-	 * @param min
-	 * @param max
-	 * @return
-	 */
-	public static boolean validateLen(String str,int min,int max) {
-		//正则表达式
-		String regex ="\\S{"+min+","+max+"}";
-		if(!str.matches(regex))
-			return false;
-		return true;
-	}
+		/**
+		 * 转换字节数组为16进制字串
+		 * @param b
+		 *            字节数组
+		 * @return 16进制字串
+		 */
+
+		public static String byteArrayToHexString(byte[] b) {
+			StringBuffer resultSb = new StringBuffer();
+			for (int i = 0; i < b.length; i++) {
+				resultSb.append(byteToHexString(b[i]));
+			}
+			return resultSb.toString();
+		}
+
+		private static String byteToHexString(byte b) {
+			int n = b;
+			if (n < 0)
+				n = 256 + n;
+			int d1 = n / 16;
+			int d2 = n % 16;
+			return hexDigits[d1] + hexDigits[d2];
+		}
+		/**
+		 * 将orig中的数据拷贝到dest中
+		 * @param dest 目标类
+		 * @param orig 原类
+		 */
+		public static void copyBean(Object dest,Object orig) throws Exception{
+			BeanUtils.copyProperties(dest, orig);
+		}
 }

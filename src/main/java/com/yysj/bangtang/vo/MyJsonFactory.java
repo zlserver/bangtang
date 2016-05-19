@@ -7,6 +7,7 @@ public class MyJsonFactory {
 	public static JSONObject generator(OperationStatus status){
 		JSONObject json= new JSONObject();
 		json.put("status", status.ordinal());
+		json.put("message", status.getMessage());
 		return json;
 	}
 }

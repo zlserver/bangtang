@@ -10,27 +10,27 @@ public interface ClientService {
 	 * @param email 邮箱
 	 * @return
 	 */
-	public Client findByEmail(String email);
+	public Client findByEmail(String email)throws Exception;
 	/**
 	 * 用户登录
 	 * @param email 邮箱
 	 * @param password 密码
 	 * @return
 	 */
-	public Client login(String email,String password);
+	public Client login(String email,String password)throws Exception;
 	/**
 	 * 注册用户
 	 * @param email 邮箱
 	 * @param password 密码
 	 * @return
 	 */
-	public void registerByEmail(String email,String password);
+	public void registerByEmail(String email,String password)throws Exception;
 	/**
 	 * 更改用户的状态
 	 * @param eamil 用户邮箱
 	 * @param state 用户状态，1：正常状态；2:邮箱未认证；3:屏蔽状态
 	 */
-	public void updateClientState(String eamil,int state);
+	public void updateClientState(String eamil,int state)throws Exception;
 	
 	
 }

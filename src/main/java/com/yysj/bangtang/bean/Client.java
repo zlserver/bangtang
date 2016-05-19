@@ -15,7 +15,7 @@ public class Client {
 
     private String picpath;
 
-    private Integer state;
+    private Integer emailstatus;
 
     private Date regtime;
 
@@ -71,12 +71,12 @@ public class Client {
         this.picpath = picpath == null ? null : picpath.trim();
     }
 
-    public Integer getState() {
-        return state;
+    public Integer getEmailstatus() {
+        return emailstatus;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setEmailstatus(Integer emailstatus) {
+        this.emailstatus = emailstatus;
     }
 
     public Date getRegtime() {

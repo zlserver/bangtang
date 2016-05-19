@@ -1,6 +1,7 @@
 package com.yysj.bangtang.vo;
 
 import com.yysj.bangtang.bean.Employee;
+import com.yysj.bangtang.utils.ValidateUtil;
 
 public class EmployeeVo extends BaseVo {
 	
@@ -20,7 +21,7 @@ public class EmployeeVo extends BaseVo {
 	public boolean validateAccountAndPass(){
 		//标识
 		boolean flage = true;
-		if(!validateLen(employee.getAccount(),3,20)||!validateLen(employee.getPassword(), 3, 20))
+		if(!ValidateUtil.validateLen(employee.getAccount(),3,20)||!ValidateUtil.validateLen(employee.getPassword(), 3, 20))
 		{
 			this.getError().put("error", "账号或密码有误!");//账号长度在3-20之间!
 			flage = false;

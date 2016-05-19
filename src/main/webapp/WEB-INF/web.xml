@@ -20,14 +20,14 @@
    </listener>
    
    <!-- 员工登录后台界面截器 -->
-  <!--  <filter>
+    <filter>
    	<filter-name>LoginFilter</filter-name>
    	<filter-class>com.yysj.bangtang.filter.LoginFilter</filter-class>
    </filter>
    <filter-mapping>
    	<filter-name>LoginFilter</filter-name>
    	<url-pattern>/control/*</url-pattern>
-   </filter-mapping> -->
+   </filter-mapping> 
      <!-- 配置SpringMVC相关信息，SpringMVC像struts一样，也通过一个Servlet截获URL请求，然后再进行相关的处理 -->
 	 
 	 <!-- Spring MVC的主控Servlet,在spring-webmvc包中，
