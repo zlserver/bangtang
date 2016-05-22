@@ -43,6 +43,14 @@ public class ValidateUtil {
 		return true;
 	}
 	/**
+	 * 校验密码
+	 * @param password 密码
+	 * @return 长度6-15非空格字符，满足返回true，否则返回false
+	 */
+	public static boolean validatePassword(String password){
+		return validateLen(password, 6, 15);
+	}
+	/**
 	 * 校验邮箱格式
 	 * @param email 邮箱
 	 * @return 符合格式返回true否则返回false

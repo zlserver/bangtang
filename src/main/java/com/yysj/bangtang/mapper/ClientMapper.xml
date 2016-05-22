@@ -1,37 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yysj.bangtang.mapper.ClientMapper">
-  <resultMap id="BaseResultMap" type="com.yysj.bangtang.bean.Client">
-    <id column="email" jdbcType="VARCHAR" property="email" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
-    <result column="gender" jdbcType="INTEGER" property="gender" />
-    <result column="nation" jdbcType="VARCHAR" property="nation" />
-    <result column="picPath" jdbcType="VARCHAR" property="picpath" />
-    <result column="emailStatus" jdbcType="INTEGER" property="emailstatus" />
-    <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
-    <result column="reLoTime" jdbcType="TIMESTAMP" property="relotime" />
-    <result column="machine" jdbcType="VARCHAR" property="machine" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yysj.bangtang.mapper.ClientMapper" >
+  <resultMap id="BaseResultMap" type="com.yysj.bangtang.bean.Client" >
+    <id column="email" property="email" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nickName" property="nickname" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="nation" property="nation" jdbcType="VARCHAR" />
+    <result column="picPath" property="picpath" jdbcType="VARCHAR" />
+    <result column="emailStatus" property="emailstatus" jdbcType="INTEGER" />
+    <result column="regTime" property="regtime" jdbcType="TIMESTAMP" />
+    <result column="reLoTime" property="relotime" jdbcType="TIMESTAMP" />
+    <result column="machine" property="machine" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -42,25 +42,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -71,41 +71,41 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
+  <sql id="Base_Column_List" >
     email, password, nickName, gender, nation, picPath, emailStatus, regTime, reLoTime, 
     machine
   </sql>
-  <select id="selectByExample" parameterType="com.yysj.bangtang.bean.ClientExample" resultMap="BaseResultMap">
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yysj.bangtang.bean.ClientExample" >
     select
-    <if test="distinct">
+    <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
     from client
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null">
+    <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from client
     where email = #{email,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from client
     where email = #{email,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.yysj.bangtang.bean.ClientExample">
+  <delete id="deleteByExample" parameterType="com.yysj.bangtang.bean.ClientExample" >
     delete from client
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.yysj.bangtang.bean.Client">
+  <insert id="insert" parameterType="com.yysj.bangtang.bean.Client" >
     insert into client (email, password, nickName, 
       gender, nation, picPath, 
       emailStatus, regTime, reLoTime, 
@@ -115,118 +115,118 @@
       #{emailstatus,jdbcType=INTEGER}, #{regtime,jdbcType=TIMESTAMP}, #{relotime,jdbcType=TIMESTAMP}, 
       #{machine,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.yysj.bangtang.bean.Client">
+  <insert id="insertSelective" parameterType="com.yysj.bangtang.bean.Client" >
     insert into client
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="email != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="email != null" >
         email,
       </if>
-      <if test="password != null">
+      <if test="password != null" >
         password,
       </if>
-      <if test="nickname != null">
+      <if test="nickname != null" >
         nickName,
       </if>
-      <if test="gender != null">
+      <if test="gender != null" >
         gender,
       </if>
-      <if test="nation != null">
+      <if test="nation != null" >
         nation,
       </if>
-      <if test="picpath != null">
+      <if test="picpath != null" >
         picPath,
       </if>
-      <if test="emailstatus != null">
+      <if test="emailstatus != null" >
         emailStatus,
       </if>
-      <if test="regtime != null">
+      <if test="regtime != null" >
         regTime,
       </if>
-      <if test="relotime != null">
+      <if test="relotime != null" >
         reLoTime,
       </if>
-      <if test="machine != null">
+      <if test="machine != null" >
         machine,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="email != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
+      <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
+      <if test="nickname != null" >
         #{nickname,jdbcType=VARCHAR},
       </if>
-      <if test="gender != null">
+      <if test="gender != null" >
         #{gender,jdbcType=INTEGER},
       </if>
-      <if test="nation != null">
+      <if test="nation != null" >
         #{nation,jdbcType=VARCHAR},
       </if>
-      <if test="picpath != null">
+      <if test="picpath != null" >
         #{picpath,jdbcType=VARCHAR},
       </if>
-      <if test="emailstatus != null">
+      <if test="emailstatus != null" >
         #{emailstatus,jdbcType=INTEGER},
       </if>
-      <if test="regtime != null">
+      <if test="regtime != null" >
         #{regtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="relotime != null">
+      <if test="relotime != null" >
         #{relotime,jdbcType=TIMESTAMP},
       </if>
-      <if test="machine != null">
+      <if test="machine != null" >
         #{machine,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.yysj.bangtang.bean.ClientExample" resultType="java.lang.Integer">
+  <select id="countByExample" parameterType="com.yysj.bangtang.bean.ClientExample" resultType="java.lang.Integer" >
     select count(*) from client
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map" >
     update client
-    <set>
-      <if test="record.email != null">
+    <set >
+      <if test="record.email != null" >
         email = #{record.email,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null">
+      <if test="record.password != null" >
         password = #{record.password,jdbcType=VARCHAR},
       </if>
-      <if test="record.nickname != null">
+      <if test="record.nickname != null" >
         nickName = #{record.nickname,jdbcType=VARCHAR},
       </if>
-      <if test="record.gender != null">
+      <if test="record.gender != null" >
         gender = #{record.gender,jdbcType=INTEGER},
       </if>
-      <if test="record.nation != null">
+      <if test="record.nation != null" >
         nation = #{record.nation,jdbcType=VARCHAR},
       </if>
-      <if test="record.picpath != null">
+      <if test="record.picpath != null" >
         picPath = #{record.picpath,jdbcType=VARCHAR},
       </if>
-      <if test="record.emailstatus != null">
+      <if test="record.emailstatus != null" >
         emailStatus = #{record.emailstatus,jdbcType=INTEGER},
       </if>
-      <if test="record.regtime != null">
+      <if test="record.regtime != null" >
         regTime = #{record.regtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.relotime != null">
+      <if test="record.relotime != null" >
         reLoTime = #{record.relotime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.machine != null">
+      <if test="record.machine != null" >
         machine = #{record.machine,jdbcType=VARCHAR},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+  <update id="updateByExample" parameterType="map" >
     update client
     set email = #{record.email,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
@@ -238,44 +238,44 @@
       regTime = #{record.regtime,jdbcType=TIMESTAMP},
       reLoTime = #{record.relotime,jdbcType=TIMESTAMP},
       machine = #{record.machine,jdbcType=VARCHAR}
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yysj.bangtang.bean.Client">
+  <update id="updateByPrimaryKeySelective" parameterType="com.yysj.bangtang.bean.Client" >
     update client
-    <set>
-      <if test="password != null">
+    <set >
+      <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="nickname != null">
+      <if test="nickname != null" >
         nickName = #{nickname,jdbcType=VARCHAR},
       </if>
-      <if test="gender != null">
+      <if test="gender != null" >
         gender = #{gender,jdbcType=INTEGER},
       </if>
-      <if test="nation != null">
+      <if test="nation != null" >
         nation = #{nation,jdbcType=VARCHAR},
       </if>
-      <if test="picpath != null">
+      <if test="picpath != null" >
         picPath = #{picpath,jdbcType=VARCHAR},
       </if>
-      <if test="emailstatus != null">
+      <if test="emailstatus != null" >
         emailStatus = #{emailstatus,jdbcType=INTEGER},
       </if>
-      <if test="regtime != null">
+      <if test="regtime != null" >
         regTime = #{regtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="relotime != null">
+      <if test="relotime != null" >
         reLoTime = #{relotime,jdbcType=TIMESTAMP},
       </if>
-      <if test="machine != null">
+      <if test="machine != null" >
         machine = #{machine,jdbcType=VARCHAR},
       </if>
     </set>
     where email = #{email,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yysj.bangtang.bean.Client">
+  <update id="updateByPrimaryKey" parameterType="com.yysj.bangtang.bean.Client" >
     update client
     set password = #{password,jdbcType=VARCHAR},
       nickName = #{nickname,jdbcType=VARCHAR},
@@ -283,292 +283,6 @@
       nation = #{nation,jdbcType=VARCHAR},
       picPath = #{picpath,jdbcType=VARCHAR},
       emailStatus = #{emailstatus,jdbcType=INTEGER},
-      regTime = #{regtime,jdbcType=TIMESTAMP},
-      reLoTime = #{relotime,jdbcType=TIMESTAMP},
-      machine = #{machine,jdbcType=VARCHAR}
-    where email = #{email,jdbcType=VARCHAR}
-  </update>
-  <resultMap id="BaseResultMap" type="com.yysj.bangtang.bean.Client">
-    <id column="email" jdbcType="VARCHAR" property="email" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
-    <result column="gender" jdbcType="INTEGER" property="gender" />
-    <result column="nation" jdbcType="VARCHAR" property="nation" />
-    <result column="picPath" jdbcType="VARCHAR" property="picpath" />
-    <result column="state" jdbcType="INTEGER" property="state" />
-    <result column="regTime" jdbcType="TIMESTAMP" property="regtime" />
-    <result column="reLoTime" jdbcType="TIMESTAMP" property="relotime" />
-    <result column="machine" jdbcType="VARCHAR" property="machine" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    email, password, nickName, gender, nation, picPath, state, regTime, reLoTime, machine
-  </sql>
-  <select id="selectByExample" parameterType="com.yysj.bangtang.bean.ClientExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from client
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from client
-    where email = #{email,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from client
-    where email = #{email,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.yysj.bangtang.bean.ClientExample">
-    delete from client
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.yysj.bangtang.bean.Client">
-    insert into client (email, password, nickName, 
-      gender, nation, picPath, 
-      state, regTime, reLoTime, 
-      machine)
-    values (#{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{gender,jdbcType=INTEGER}, #{nation,jdbcType=VARCHAR}, #{picpath,jdbcType=VARCHAR}, 
-      #{state,jdbcType=INTEGER}, #{regtime,jdbcType=TIMESTAMP}, #{relotime,jdbcType=TIMESTAMP}, 
-      #{machine,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yysj.bangtang.bean.Client">
-    insert into client
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="email != null">
-        email,
-      </if>
-      <if test="password != null">
-        password,
-      </if>
-      <if test="nickname != null">
-        nickName,
-      </if>
-      <if test="gender != null">
-        gender,
-      </if>
-      <if test="nation != null">
-        nation,
-      </if>
-      <if test="picpath != null">
-        picPath,
-      </if>
-      <if test="state != null">
-        state,
-      </if>
-      <if test="regtime != null">
-        regTime,
-      </if>
-      <if test="relotime != null">
-        reLoTime,
-      </if>
-      <if test="machine != null">
-        machine,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="nickname != null">
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="gender != null">
-        #{gender,jdbcType=INTEGER},
-      </if>
-      <if test="nation != null">
-        #{nation,jdbcType=VARCHAR},
-      </if>
-      <if test="picpath != null">
-        #{picpath,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=INTEGER},
-      </if>
-      <if test="regtime != null">
-        #{regtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="relotime != null">
-        #{relotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="machine != null">
-        #{machine,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.yysj.bangtang.bean.ClientExample" resultType="java.lang.Integer">
-    select count(*) from client
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update client
-    <set>
-      <if test="record.email != null">
-        email = #{record.email,jdbcType=VARCHAR},
-      </if>
-      <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
-      </if>
-      <if test="record.nickname != null">
-        nickName = #{record.nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gender != null">
-        gender = #{record.gender,jdbcType=INTEGER},
-      </if>
-      <if test="record.nation != null">
-        nation = #{record.nation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.picpath != null">
-        picPath = #{record.picpath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.state != null">
-        state = #{record.state,jdbcType=INTEGER},
-      </if>
-      <if test="record.regtime != null">
-        regTime = #{record.regtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.relotime != null">
-        reLoTime = #{record.relotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.machine != null">
-        machine = #{record.machine,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update client
-    set email = #{record.email,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      nickName = #{record.nickname,jdbcType=VARCHAR},
-      gender = #{record.gender,jdbcType=INTEGER},
-      nation = #{record.nation,jdbcType=VARCHAR},
-      picPath = #{record.picpath,jdbcType=VARCHAR},
-      state = #{record.state,jdbcType=INTEGER},
-      regTime = #{record.regtime,jdbcType=TIMESTAMP},
-      reLoTime = #{record.relotime,jdbcType=TIMESTAMP},
-      machine = #{record.machine,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yysj.bangtang.bean.Client">
-    update client
-    <set>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="nickname != null">
-        nickName = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="gender != null">
-        gender = #{gender,jdbcType=INTEGER},
-      </if>
-      <if test="nation != null">
-        nation = #{nation,jdbcType=VARCHAR},
-      </if>
-      <if test="picpath != null">
-        picPath = #{picpath,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=INTEGER},
-      </if>
-      <if test="regtime != null">
-        regTime = #{regtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="relotime != null">
-        reLoTime = #{relotime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="machine != null">
-        machine = #{machine,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where email = #{email,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yysj.bangtang.bean.Client">
-    update client
-    set password = #{password,jdbcType=VARCHAR},
-      nickName = #{nickname,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=INTEGER},
-      nation = #{nation,jdbcType=VARCHAR},
-      picPath = #{picpath,jdbcType=VARCHAR},
-      state = #{state,jdbcType=INTEGER},
       regTime = #{regtime,jdbcType=TIMESTAMP},
       reLoTime = #{relotime,jdbcType=TIMESTAMP},
       machine = #{machine,jdbcType=VARCHAR}

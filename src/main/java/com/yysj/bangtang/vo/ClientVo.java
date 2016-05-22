@@ -16,17 +16,17 @@ public class ClientVo {
 	}
 	
 	/**
-	 * 注册校验
+	 * 邮箱密码校验
 	 * 邮箱符合格式
 	 * 密码6-15非空字符
 	 */
-	public boolean validateRegister(){
+	public boolean validateEmailAndPas(){
 		
 		if( client!=null){
 			//邮箱
 			if(ValidateUtil.validateEmail(client.getEmail())){
 				//密码,6-15非空字符
-				if(ValidateUtil.validateLen(client.getPassword(),6,15)){
+				if(ValidateUtil.validatePassword(client.getPassword())){
 					return true;
 				}
 			}
@@ -34,4 +34,5 @@ public class ClientVo {
 		
 		return false;
 	}
+	
 }
