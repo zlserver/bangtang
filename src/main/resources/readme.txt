@@ -1,3 +1,6 @@
-1.项目介绍
-2.github操作说明
-3.修改了
+1.移动端操作链接
+
+1.注册：
+/mobile/client/register.action
+参数：email 和password
+2。登录

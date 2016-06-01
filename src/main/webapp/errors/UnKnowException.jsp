@@ -3,7 +3,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>智能自适应问答系统</title>
+    <title>棒棒糖管理后台</title>
   </head>
   <body>
   亲-_-,出现未知错误！我们会尽快维护<br/>
