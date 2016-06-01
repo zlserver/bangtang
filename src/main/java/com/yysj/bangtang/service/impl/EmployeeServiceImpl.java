@@ -17,9 +17,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeMapper employeeMapper ;
 	
 	public Employee login(String account, String password) {
-		if(ValidateUtil.validateLen(account, 3,20)){
-			
+		if(ValidateUtil.validateLen(account, 3,20)){		
 			Employee em=employeeMapper.selectByPrimaryKey(account);
+
 			if( em!=null){
 				if( em.getPassword().equals(password))
 					return em;

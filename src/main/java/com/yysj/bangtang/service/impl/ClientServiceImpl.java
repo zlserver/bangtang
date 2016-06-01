@@ -1,11 +1,13 @@
 package com.yysj.bangtang.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yysj.bangtang.bean.Client;
+import com.yysj.bangtang.bean.ClientExample;
 import com.yysj.bangtang.bean.constant.EmailState;
 import com.yysj.bangtang.mapper.ClientMapper;
 import com.yysj.bangtang.service.ClientService;
@@ -21,7 +23,13 @@ public class ClientServiceImpl implements ClientService {
 
 	public Client login(String email, String password)throws Exception {
 		// TODO Auto-generated method stub
-		
+		ClientExample example = new ClientExample();
+		ClientExample.Criteria criteria= example.createCriteria();
+		criteria.andEmailEqualTo(email);
+		criteria.andPasswordEqualTo(ServiceUtils.MD5Encode(password));
+		List<Client> list=clientMapper.selectByExample(example);
+		if( list!=null&& list.size()==1)
+			return list.get(0);
 		return null;
 	}
 

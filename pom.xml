@@ -27,8 +27,16 @@
      <ehcache.version>2.10.0</ehcache.version>
      <jsr250.version>1.0</jsr250.version> <!-- JSR-250注解 -->
       <json.version>2.4</json.version>
+      <eamil.version>1.4</eamil.version>
   </properties>
   <dependencies>
+  
+  <!-- http://mvnrepository.com/artifact/javax.mail/mail -->
+<dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>mail</artifactId>
+    <version>${eamil.version}</version>
+</dependency>
    <!-- json格式依赖jar -->
 	<dependency>
 		<groupId>net.sf.json-lib</groupId>

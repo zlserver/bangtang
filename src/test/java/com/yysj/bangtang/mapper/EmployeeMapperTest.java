@@ -24,7 +24,7 @@ public class EmployeeMapperTest {
 	@Test
 	public void findAccount(){
 		EmployeeMapper em=ac.getBean(EmployeeMapper.class);
-		Employee emplo= em.findByAccount("liang");
+		Employee emplo= em.selectByPrimaryKey("liang");
 		
 		System.out.println(emplo.getAccount());
 	}
@@ -32,9 +32,9 @@ public class EmployeeMapperTest {
 	@Test
 	public void updateState(){
 		EmployeeMapper em=ac.getBean(EmployeeMapper.class);
-		Employee emplo= em.findByAccount("liang");
+		Employee emplo= em.selectByPrimaryKey("liang");
 		emplo.setState(2);
-		em.updateState(emplo);
+		em.updateByPrimaryKey(emplo);
 	}
 	
 	@Test
@@ -46,6 +46,6 @@ public class EmployeeMapperTest {
 		emplo.setGender(1);
 		
 		EmployeeMapper em=ac.getBean(EmployeeMapper.class);
-		em.insertEmployee(emplo);
+		em.insert(emplo);
 	}
 }
