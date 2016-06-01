@@ -26,13 +26,13 @@ public class ClientAction {
 	
 	private ClientService clientService;
 	
+	public String editPic(){
+		
+		return "";
+	}
 	/**
 	 * 注册
-<<<<<<< HEAD
-	 * @param cl  接受参数，接受email 和password
-=======
 	 * @param vo  接受参数，接受email 和password
->>>>>>> refs/heads/localzlgit
 	 * @param model 存放返回给页面端的内容
 	 * @return json类型字符串，如果成功status为1，否则失败
 	 * {
