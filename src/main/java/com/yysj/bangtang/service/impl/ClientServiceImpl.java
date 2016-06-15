@@ -12,6 +12,7 @@ import com.yysj.bangtang.bean.constant.EmailState;
 import com.yysj.bangtang.mapper.ClientMapper;
 import com.yysj.bangtang.service.ClientService;
 import com.yysj.bangtang.utils.ServiceUtils;
+import com.yysj.bangtang.utils.TokenGenerator;
 @Service("clientService")
 public class ClientServiceImpl implements ClientService {
 
@@ -41,10 +42,11 @@ public class ClientServiceImpl implements ClientService {
 		client.setEmail(email);
 		client.setPassword(md5Ps);
 		client.setRegtime(new Date());
+		//设置token值
+		client.setToken(TokenGenerator.generatorToken());
 		//邮箱未激活
 		client.setEmailstatus(EmailState.INACTIVE);
 		clientMapper.insert(client);
-		
 	}
 
 	public void updateClientState(String eamil, int state)throws Exception {

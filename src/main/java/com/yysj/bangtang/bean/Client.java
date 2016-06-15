@@ -7,6 +7,8 @@ public class Client {
 
     private String password;
 
+    private String token;
+
     private String nickname;
 
     private Integer gender;
@@ -37,6 +39,14 @@ public class Client {
 
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
     }
 
     public String getNickname() {

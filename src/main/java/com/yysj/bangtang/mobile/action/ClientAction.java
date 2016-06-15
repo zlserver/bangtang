@@ -55,6 +55,7 @@ public class ClientAction {
 			if( client==null){
 				//保存用户
 				clientService.registerByEmail(vo.getClient().getEmail(), vo.getClient().getPassword());
+				
 				regJson=MyJsonFactory.generator(OperationStatus.SUCCESS);
 			}else{
 				regJson=MyJsonFactory.generator(OperationStatus.CLIENT_EMAIL_EXIST);
