@@ -25,29 +25,13 @@
 	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >  
 	    <property name="defaultEncoding" value="UTF-8"/> <!-- 默认编码 (ISO-8859-1)   -->
 	    <property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240)   -->
-	     <property name="uploadTempDir" value="/temp"/>    <!-- 上传文件的临时路径,上传完成后，临时目录中的临时文件会被自动清除   -->
+	     <property name="uploadTempDir" value="temp"/>    <!-- 上传文件的临时路径,上传完成后，临时目录中的临时文件会被自动清除   -->
 	     <property name="maxUploadSize" value="5242880"/><!--  最大文件大小5M,-1为无限止(-1)   -->
 	</bean> 
     <!-- 文件加载器，加载类路径下的配置文件jdbc.properties -->
     
 	<context:property-placeholder location="classpath:jdbc.properties" />
 	
-    <!-- jdbc.driverClass=com.mysql.jdbc.Driver
-jdbc.jdbcUrl=jdbc:mysql://localhost:3306/bangtang?useUnicode=true&amp;characterEncoding=UTF-8
-jdbc.user=root
-jdbc.password=123456
-连接池中保留最大连接数Default:15
-jdbc.maxPoolSize=30
-连接池中保留最小连接数
-jdbc.minPoolSize=5
-初始化时获取连接数取值应在minPoolSize和maxPoolSize的间Default:3
-jdbc.initialPoolSize=6
-最大空闲时间,120秒内未使用则连接被丢弃若为0则永不丢弃Default:0
-jdbc.maxIdleTime=120
-当连接池中连接耗尽时候c3p0次同时获取连接数Default:3
-jdbc.acquireIncrement=3
- 每3000秒检查所有连接池中空闲连接Default:0
-jdbc.idleConnectionTestPeriod=3000 -->
     <!-- 配置数据源 ,使用c3p0数据源-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" >

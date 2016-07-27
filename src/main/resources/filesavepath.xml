@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<relativepath id="root" value="G:/filesystem/">
+	<!--用户头像保存相对路径-->
+	<relativepath  id="userPic"  value="image/userpic/" />
+	<relativepath  id="contextPic"  value="image/contextPic/" />
+	
+</relativepath>

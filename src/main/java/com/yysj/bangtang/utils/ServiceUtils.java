@@ -59,4 +59,13 @@ public class ServiceUtils {
 		public static void copyBean(Object dest,Object orig) throws Exception{
 			BeanUtils.copyProperties(dest, orig);
 		}
+		/**
+		 * 从文件名中获取文件的后缀名，入a.jpg，返回结果jpg
+		 * @param fileName
+		 * @return
+		 */
+		public static String getExt(String fileName){
+			
+			return fileName.substring(fileName.lastIndexOf(".")+1);
+		}
 }

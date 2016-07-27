@@ -28,8 +28,16 @@
      <jsr250.version>1.0</jsr250.version> <!-- JSR-250注解 -->
       <json.version>2.4</json.version>
       <eamil.version>1.4</eamil.version>
+      <jackson.version>1.9.13</jackson.version>
+      <dom4j.version>1.6.1</dom4j.version>
   </properties>
   <dependencies>
+  <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+<dependency>
+    <groupId>dom4j</groupId>
+    <artifactId>dom4j</artifactId>
+    <version>${dom4j.version}</version>
+</dependency>
   
   <!-- http://mvnrepository.com/artifact/javax.mail/mail -->
 <dependency>
@@ -37,6 +45,22 @@
     <artifactId>mail</artifactId>
     <version>${eamil.version}</version>
 </dependency>
+<!-- jackson-mapper-asl和jackson-core-asl包是SPringMVC进行json交互的依赖包 -->
+<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
+<dependency>
+    <groupId>org.codehaus.jackson</groupId>
+    <artifactId>jackson-mapper-asl</artifactId>
+    <version>${jackson.version}</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl -->
+<dependency>
+    <groupId>org.codehaus.jackson</groupId>
+    <artifactId>jackson-core-asl</artifactId>
+    <version>${jackson.version}</version>
+</dependency>
+
+
+
    <!-- json格式依赖jar -->
 	<dependency>
 		<groupId>net.sf.json-lib</groupId>

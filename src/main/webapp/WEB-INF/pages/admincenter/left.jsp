@@ -19,6 +19,9 @@
 	$(function() {
 		$("#browser").treeview();
 	});
+	var num=1;
+	setTimeout(function(){num=2},100);
+	alert(num);
 </script>
 
 </head>
