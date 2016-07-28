@@ -18,7 +18,10 @@
   <listener>
       <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
    </listener>
-   
+   <!-- 开启邮箱通知服务 -->
+   <listener>
+   	<listener-class>com.yysj.bangtang.listener.InitListener</listener-class>
+   </listener>
    <!-- 员工登录后台界面截器 -->
     <filter>
    	<filter-name>LoginFilter</filter-name>

@@ -17,6 +17,10 @@ public class Client {
 
     private String picpath;
 
+    private Date activelasttime;
+
+    private String activecode;
+
     private Integer emailstatus;
 
     private Date regtime;
@@ -79,6 +83,22 @@ public class Client {
 
     public void setPicpath(String picpath) {
         this.picpath = picpath == null ? null : picpath.trim();
+    }
+
+    public Date getActivelasttime() {
+        return activelasttime;
+    }
+
+    public void setActivelasttime(Date activelasttime) {
+        this.activelasttime = activelasttime;
+    }
+
+    public String getActivecode() {
+        return activecode;
+    }
+
+    public void setActivecode(String activecode) {
+        this.activecode = activecode == null ? null : activecode.trim();
     }
 
     public Integer getEmailstatus() {

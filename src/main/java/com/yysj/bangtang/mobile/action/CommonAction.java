@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,9 +16,11 @@ import com.yysj.bangtang.bean.Client;
 import com.yysj.bangtang.bean.base.DateJsonValueProcessor;
 import com.yysj.bangtang.mobile.ClientJson;
 import com.yysj.bangtang.mobile.MyStatus;
+import com.yysj.bangtang.myenum.EmailStateEnum;
 import com.yysj.bangtang.myenum.OperationStatus;
 import com.yysj.bangtang.service.ClientService;
 import com.yysj.bangtang.utils.Log;
+import com.yysj.bangtang.utils.ServiceUtils;
 import com.yysj.bangtang.utils.SiteUtils;
 import com.yysj.bangtang.utils.TokenGenerator;
 import com.yysj.bangtang.utils.ValidateUtil;
@@ -70,6 +73,29 @@ public class CommonAction {
 			status.setOperationStatus(OperationStatus.CLIENT_EMAIL_PASS_ERROR);
 		}
 		return status;
+	}
+	
+	
+	@RequestMapping(value="activeEmail/{activeCode}")
+	public String  activeEmail(@PathVariable("activeCode")String activeCode,Model model){
+		if( ValidateUtil.isValidateStr(activeCode)){
+			Client client= clientService.findByActiveCode(activeCode);
+			if( client!=null){
+				//计算激活码是否失效
+				Date current = new Date();
+				Date lasttime=client.getActivelasttime();
+				if( current.before(lasttime)){
+					client.setEmailstatus(EmailStateEnum.ACTIVE.ordinal());
+					client.setActivecode(null);
+					clientService.updateClient(client);
+					//返回激活成功界面
+					return SiteUtils.getPage("common.activesuccess");
+				}
+			}
+		}
+		 model.addAttribute("message", "激活码无效!");
+		//激活码无效，重新激活
+		return SiteUtils.getPage("common.activefail");
 	}
 	/**
 	 * 登录

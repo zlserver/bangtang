@@ -5,10 +5,13 @@
 <script src="js/left_js/jquery.cookie.js" type="text/javascript"></script>
 <script src="js/left_js/jquery.treeview.js" type="text/javascript"></script>
 <script type="text/javascript">
-	
-	var str = "11"+2-"1";
-	console.log(str);
-	console.log(typeof str);
+
+var num =10;
+function foo(){
+	num =20;
+	alert(num);
+}
+alert(num);
 </script>
 <body>
 <h2>Hello World!</h2>

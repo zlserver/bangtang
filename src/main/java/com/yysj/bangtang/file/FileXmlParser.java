@@ -8,14 +8,15 @@ import java.util.Map;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.stereotype.Service;
 
-
+@Service("filePath")
 public class FileXmlParser implements FilePath{
 
 	private Map<String,String> pathMaps=new HashMap<String, String>();
 	
 	public FileXmlParser() {
-		super();
+		super();        
 		String config ="filesavepath.xml";
 		init(config);
 	}

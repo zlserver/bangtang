@@ -2,6 +2,7 @@ package com.yysj.bangtang.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
+import java.util.UUID;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -67,5 +68,12 @@ public class ServiceUtils {
 		public static String getExt(String fileName){
 			
 			return fileName.substring(fileName.lastIndexOf(".")+1);
+		}
+		/**
+		 * 返回uuid
+		 * @return 大写字符的uuid值
+		 */
+		public static String getUuid() {
+			 return UUID.randomUUID().toString().toUpperCase();
 		}
 }

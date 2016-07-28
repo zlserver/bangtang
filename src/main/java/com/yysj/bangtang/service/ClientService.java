@@ -51,4 +51,10 @@ public interface ClientService {
 	 * @param client
 	 */
 	public void updateClient(Client client);
+	/**
+	 * 根据激活码查找用户
+	 * @param activeCode
+	 * @return
+	 */
+	public Client findByActiveCode(String activeCode);
 }

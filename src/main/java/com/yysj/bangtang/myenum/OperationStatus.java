@@ -17,7 +17,10 @@ public enum OperationStatus {
 	CLIENT_EDIT_PIC_ERROR(1003,"修改用户头像出错"),
 	
 	
-	TOKEN_UNACCORDANCE(2001,"token值不一致");
+	TOKEN_UNACCORDANCE(2001,"token值不一致"),
+	
+
+	IMAGE_TYPE_ERROR(3001,"图片格式有误！");
 	
 	private final int status;
 	private final String message;

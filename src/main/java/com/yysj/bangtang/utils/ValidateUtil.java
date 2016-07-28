@@ -1,8 +1,64 @@
 package com.yysj.bangtang.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import com.yysj.bangtang.exception.NullException;
 
 public class ValidateUtil {
+	
+	private static Properties properties ;
+	static{
+		InputStream is= ValidateUtil.class.getClassLoader().getResourceAsStream("filetype.properties");
+		properties=new Properties();
+		try {
+			properties.load(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("加载文件类型格式配置文件出错!");
+		}
+	}
+	/**
+	 * 判断是否是要求图片格式，图片格式配置文件在filetype.properties文件中
+	 * @param ext 后缀名
+	 * @param contentType  格式
+	 * @return
+	 */
+	public static boolean isImage(String ext,String contentType){
+		String exts= properties.getProperty("image.ext");
+		String types= properties.getProperty("image.type");
+		List<String> containExts = Arrays.asList(exts.split(",")) ;
+		List<String> containTypes = Arrays.asList(types.split(",")) ;
+		if( containExts.contains(ext) && containTypes.contains(contentType))
+			return true;
+		return false;
+	}
+	/**
+	 * 判断文件是否是图片
+	 * @param logo
+	 * @return ture：图片；false：非图片格式
+	 */
+	public static boolean isImage(CommonsMultipartFile logo){
+		if( logo==null ||logo.getSize()<=0)
+			return false;
+		String ext = ServiceUtils.getExt(logo.getOriginalFilename());
+		String contentType = logo.getContentType();
+		System.out.println(ext+":"+contentType);
+		String exts= properties.getProperty("image.ext");
+		String types= properties.getProperty("image.type");
+		List<String> containExts = Arrays.asList(exts.split(",")) ;
+		List<String> containTypes = Arrays.asList(types.split(",")) ;
+		if( containExts.contains(ext) && containTypes.contains(contentType))
+			return true;
+		return false;
+	}
+	
 	/**
 	 * 判断是否是有效字符串。
 	 * @param str 字符串

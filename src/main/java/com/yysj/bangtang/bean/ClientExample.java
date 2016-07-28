@@ -585,6 +585,136 @@ public class ClientExample {
             return (Criteria) this;
         }
 
+        public Criteria andActivelasttimeIsNull() {
+            addCriterion("activeLastTime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeIsNotNull() {
+            addCriterion("activeLastTime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeEqualTo(Date value) {
+            addCriterion("activeLastTime =", value, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeNotEqualTo(Date value) {
+            addCriterion("activeLastTime <>", value, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeGreaterThan(Date value) {
+            addCriterion("activeLastTime >", value, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("activeLastTime >=", value, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeLessThan(Date value) {
+            addCriterion("activeLastTime <", value, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeLessThanOrEqualTo(Date value) {
+            addCriterion("activeLastTime <=", value, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeIn(List<Date> values) {
+            addCriterion("activeLastTime in", values, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeNotIn(List<Date> values) {
+            addCriterion("activeLastTime not in", values, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeBetween(Date value1, Date value2) {
+            addCriterion("activeLastTime between", value1, value2, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivelasttimeNotBetween(Date value1, Date value2) {
+            addCriterion("activeLastTime not between", value1, value2, "activelasttime");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeIsNull() {
+            addCriterion("activeCode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeIsNotNull() {
+            addCriterion("activeCode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeEqualTo(String value) {
+            addCriterion("activeCode =", value, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeNotEqualTo(String value) {
+            addCriterion("activeCode <>", value, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeGreaterThan(String value) {
+            addCriterion("activeCode >", value, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeGreaterThanOrEqualTo(String value) {
+            addCriterion("activeCode >=", value, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeLessThan(String value) {
+            addCriterion("activeCode <", value, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeLessThanOrEqualTo(String value) {
+            addCriterion("activeCode <=", value, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeLike(String value) {
+            addCriterion("activeCode like", value, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeNotLike(String value) {
+            addCriterion("activeCode not like", value, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeIn(List<String> values) {
+            addCriterion("activeCode in", values, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeNotIn(List<String> values) {
+            addCriterion("activeCode not in", values, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeBetween(String value1, String value2) {
+            addCriterion("activeCode between", value1, value2, "activecode");
+            return (Criteria) this;
+        }
+
+        public Criteria andActivecodeNotBetween(String value1, String value2) {
+            addCriterion("activeCode not between", value1, value2, "activecode");
+            return (Criteria) this;
+        }
+
         public Criteria andEmailstatusIsNull() {
             addCriterion("emailStatus is null");
             return (Criteria) this;
