@@ -12,7 +12,7 @@ import com.yysj.bangtang.bean.ClientExample;
 import com.yysj.bangtang.mapper.ClientMapper;
 import com.yysj.bangtang.myenum.EmailStateEnum;
 import com.yysj.bangtang.service.ClientService;
-import com.yysj.bangtang.task.ActiveEmailTask;
+import com.yysj.bangtang.task.EmailTask;
 import com.yysj.bangtang.task.EmailService;
 import com.yysj.bangtang.utils.EmailUtils;
 import com.yysj.bangtang.utils.ServiceUtils;
@@ -62,9 +62,14 @@ public class ClientServiceImpl  implements ClientService {
 		clientMapper.insert(client);
 		
 		//发送激活邮箱通知
-		ActiveEmailTask task = new ActiveEmailTask(email, activeCode);
+		//1.通知内容
+		StringBuffer sendContent =new StringBuffer();
+		String activeUrl="http://localhost:8080/bangtang/mobile/common/activeEmail/"+activeCode+".action"; 
+		sendContent.append("<h3>点击以下链接激活邮箱:</h3> <a href=\"")
+		.append(activeUrl).append("\">").append(activeUrl).append("</a>");
+		//2.添加到发送任务队列中
+		EmailTask task = new EmailTask(EmailTask.TaskPriority.PRIORITY_NORMAL, email, sendContent.toString(),"eyemember邮箱验证");
 		EmailService.addTask(task);
-		//EmailUtils.sendActiveEmail(email, activeCode);
 	}
 
 	public int updateClientState(String email, EmailStateEnum state)throws Exception {
@@ -110,6 +115,60 @@ public class ClientServiceImpl  implements ClientService {
 			ClientExample example = new ClientExample();
 			ClientExample.Criteria criteria= example.createCriteria();
 			criteria.andActivecodeEqualTo(activeCode);
+			List<Client> list= clientMapper.selectByExample(example);
+			if( list!=null &&list.size()==1)
+				return list.get(0);
+		}
+		return null;
+	}
+	/**
+	 * 发送重置密码的邮箱通知
+	 */
+	public int sendResetPassLink(String email) {
+			//生成重置码
+			String resetCode =ServiceUtils.getUuid();
+			Client client =findByEmail(email);
+			if(client==null)
+				return -1; 
+			//设置重置码
+			client.setResetcode(resetCode);
+			updateClient(client);
+			//发送重置密码的邮箱通知
+			StringBuffer sendContent =new StringBuffer();
+			String resetUrl="http://localhost:8080/bangtang/mobile/common/resetPasswordUI/"+resetCode+".action"; 
+			sendContent.append("<h3>点击以下链接重置密码:</h3> <a href=\"")
+			.append(resetUrl).append("\">").append(resetUrl).append("</a>");
+			
+			EmailTask task = new EmailTask(EmailTask.TaskPriority.PRIORITY_HIGH, email, sendContent.toString(),"eyemember找回密码");
+			EmailService.addTask(task);
+			return 1;
+		
+	}
+
+	public int resetPassword(String resetCode, String password) {
+		
+		if( !ValidateUtil.isValidateStr(resetCode))
+			return 0;
+		if( !ValidateUtil.validatePassword(password))
+			return -1;
+		Client client =findByResetCode(resetCode);
+		if( client ==null )
+			return 0;
+		String md5Ps= ServiceUtils.MD5Encode(password);
+		//设置密码
+		client.setPassword(md5Ps);
+		//清空重置码
+		client.setResetcode(null);      
+		//保存
+		updateClient(client);
+		return 1;
+	}
+
+	public Client findByResetCode(String resetCode) {
+		if( ValidateUtil.isValidateStr(resetCode)){
+			ClientExample example = new ClientExample();
+			ClientExample.Criteria criteria= example.createCriteria();
+			criteria.andResetcodeEqualTo(resetCode);
 			List<Client> list= clientMapper.selectByExample(example);
 			if( list!=null &&list.size()==1)
 				return list.get(0);

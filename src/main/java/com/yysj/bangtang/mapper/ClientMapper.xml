@@ -10,6 +10,7 @@
     <result column="nation" property="nation" jdbcType="VARCHAR" />
     <result column="picPath" property="picpath" jdbcType="VARCHAR" />
     <result column="activeLastTime" property="activelasttime" jdbcType="TIMESTAMP" />
+    <result column="resetCode" property="resetcode" jdbcType="VARCHAR" />
     <result column="activeCode" property="activecode" jdbcType="VARCHAR" />
     <result column="emailStatus" property="emailstatus" jdbcType="INTEGER" />
     <result column="regTime" property="regtime" jdbcType="TIMESTAMP" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    email, password, token, nickName, gender, nation, picPath, activeLastTime, activeCode, 
-    emailStatus, regTime, reLoTime, machine
+    email, password, token, nickName, gender, nation, picPath, activeLastTime, resetCode, 
+    activeCode, emailStatus, regTime, reLoTime, machine
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yysj.bangtang.bean.ClientExample" >
     select
@@ -111,14 +112,14 @@
   <insert id="insert" parameterType="com.yysj.bangtang.bean.Client" >
     insert into client (email, password, token, 
       nickName, gender, nation, 
-      picPath, activeLastTime, activeCode, 
-      emailStatus, regTime, reLoTime, 
-      machine)
+      picPath, activeLastTime, resetCode, 
+      activeCode, emailStatus, regTime, 
+      reLoTime, machine)
     values (#{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{nation,jdbcType=VARCHAR}, 
-      #{picpath,jdbcType=VARCHAR}, #{activelasttime,jdbcType=TIMESTAMP}, #{activecode,jdbcType=VARCHAR}, 
-      #{emailstatus,jdbcType=INTEGER}, #{regtime,jdbcType=TIMESTAMP}, #{relotime,jdbcType=TIMESTAMP}, 
-      #{machine,jdbcType=VARCHAR})
+      #{picpath,jdbcType=VARCHAR}, #{activelasttime,jdbcType=TIMESTAMP}, #{resetcode,jdbcType=VARCHAR}, 
+      #{activecode,jdbcType=VARCHAR}, #{emailstatus,jdbcType=INTEGER}, #{regtime,jdbcType=TIMESTAMP}, 
+      #{relotime,jdbcType=TIMESTAMP}, #{machine,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yysj.bangtang.bean.Client" >
     insert into client
@@ -146,6 +147,9 @@
       </if>
       <if test="activelasttime != null" >
         activeLastTime,
+      </if>
+      <if test="resetcode != null" >
+        resetCode,
       </if>
       <if test="activecode != null" >
         activeCode,
@@ -187,6 +191,9 @@
       </if>
       <if test="activelasttime != null" >
         #{activelasttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resetcode != null" >
+        #{resetcode,jdbcType=VARCHAR},
       </if>
       <if test="activecode != null" >
         #{activecode,jdbcType=VARCHAR},
@@ -238,6 +245,9 @@
       <if test="record.activelasttime != null" >
         activeLastTime = #{record.activelasttime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.resetcode != null" >
+        resetCode = #{record.resetcode,jdbcType=VARCHAR},
+      </if>
       <if test="record.activecode != null" >
         activeCode = #{record.activecode,jdbcType=VARCHAR},
       </if>
@@ -268,6 +278,7 @@
       nation = #{record.nation,jdbcType=VARCHAR},
       picPath = #{record.picpath,jdbcType=VARCHAR},
       activeLastTime = #{record.activelasttime,jdbcType=TIMESTAMP},
+      resetCode = #{record.resetcode,jdbcType=VARCHAR},
       activeCode = #{record.activecode,jdbcType=VARCHAR},
       emailStatus = #{record.emailstatus,jdbcType=INTEGER},
       regTime = #{record.regtime,jdbcType=TIMESTAMP},
@@ -301,6 +312,9 @@
       <if test="activelasttime != null" >
         activeLastTime = #{activelasttime,jdbcType=TIMESTAMP},
       </if>
+      <if test="resetcode != null" >
+        resetCode = #{resetcode,jdbcType=VARCHAR},
+      </if>
       <if test="activecode != null" >
         activeCode = #{activecode,jdbcType=VARCHAR},
       </if>
@@ -328,6 +342,7 @@
       nation = #{nation,jdbcType=VARCHAR},
       picPath = #{picpath,jdbcType=VARCHAR},
       activeLastTime = #{activelasttime,jdbcType=TIMESTAMP},
+      resetCode = #{resetcode,jdbcType=VARCHAR},
       activeCode = #{activecode,jdbcType=VARCHAR},
       emailStatus = #{emailstatus,jdbcType=INTEGER},
       regTime = #{regtime,jdbcType=TIMESTAMP},

@@ -57,4 +57,30 @@ public interface ClientService {
 	 * @return
 	 */
 	public Client findByActiveCode(String activeCode);
+	/**
+	 * 根据重置码查找用户
+	 * @param resetCode
+	 * @return
+	 */
+	public Client findByResetCode(String resetCode);
+	/**
+	 * 发送重置密码的邮箱通知
+	 * @param email
+	 */
+	/**
+	 * 发送重置密码的邮箱通知
+	 * @param email  要通知的邮箱
+	 * @return 返回值1：发送成功-1：邮箱不存在
+	 */
+	public int sendResetPassLink(String email);
+	/**
+	 * 重置密码
+	 * @param resetCode 重置码
+	 * @param password 新密码
+	 * @return
+	 * 1：重置成功
+	 * 0：重置码无效
+	 * -1：密码不满足要求
+	 */
+	public int resetPassword(String resetCode, String password);
 }

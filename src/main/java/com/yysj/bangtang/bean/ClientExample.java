@@ -645,6 +645,76 @@ public class ClientExample {
             return (Criteria) this;
         }
 
+        public Criteria andResetcodeIsNull() {
+            addCriterion("resetCode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeIsNotNull() {
+            addCriterion("resetCode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeEqualTo(String value) {
+            addCriterion("resetCode =", value, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeNotEqualTo(String value) {
+            addCriterion("resetCode <>", value, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeGreaterThan(String value) {
+            addCriterion("resetCode >", value, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeGreaterThanOrEqualTo(String value) {
+            addCriterion("resetCode >=", value, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeLessThan(String value) {
+            addCriterion("resetCode <", value, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeLessThanOrEqualTo(String value) {
+            addCriterion("resetCode <=", value, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeLike(String value) {
+            addCriterion("resetCode like", value, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeNotLike(String value) {
+            addCriterion("resetCode not like", value, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeIn(List<String> values) {
+            addCriterion("resetCode in", values, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeNotIn(List<String> values) {
+            addCriterion("resetCode not in", values, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeBetween(String value1, String value2) {
+            addCriterion("resetCode between", value1, value2, "resetcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andResetcodeNotBetween(String value1, String value2) {
+            addCriterion("resetCode not between", value1, value2, "resetcode");
+            return (Criteria) this;
+        }
+
         public Criteria andActivecodeIsNull() {
             addCriterion("activeCode is null");
             return (Criteria) this;

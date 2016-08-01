@@ -76,7 +76,73 @@ public class CommonAction {
 	}
 	
 	
-	@RequestMapping(value="activeEmail/{activeCode}")
+	/**
+	 * 通过邮箱找回密码之发送重置密码链接
+	 * @param email  通过该邮箱找回密码
+	 * @return
+	 */
+	@RequestMapping(value="resPasLink/{email}",method=RequestMethod.GET)
+	public @ResponseBody MyStatus resetPasswordLinkByEmail(@PathVariable("email") String email){
+		
+		MyStatus status = new MyStatus();
+		//邮箱有效，发送重置密码链接给用户邮箱中
+		int state =clientService.sendResetPassLink(email);
+		//返回1表示发送成功
+		if( state==1)
+		  return status;
+		//邮箱无效
+		status.setOperationStatus(OperationStatus.CLIENT_EMAIL_INVALIDATE);
+		return status;
+	}
+
+	/**
+	 * 跳转到重置密码界面
+	 * @param resetCode
+	 * @return
+	 */
+	@RequestMapping(value="resetPasswordUI/{resetCode}",method=RequestMethod.GET)
+	public String resetPasswordUI(@PathVariable String resetCode,Model model){
+		//校验重置码是否无效
+		if(!ValidateUtil.isValidateStr(resetCode)||clientService.findByResetCode(resetCode)==null)
+		{
+			String message ="链接失效!";
+			model.addAttribute("message", message);
+			return SiteUtils.getPage("message");
+		}
+		
+		//进入重置密码界面
+		model.addAttribute("resetCode", resetCode);
+		
+		return SiteUtils.getPage("common.resetpassword");
+	}
+	/**
+	 * 重置密码
+	 * @param resetCode 重置码
+	 * @param password 新的密码
+	 * @return
+	 */
+	@RequestMapping(value="resetPassword",method=RequestMethod.POST)
+	public String resetPassword(String resetCode,String password,Model model){
+		  int state =clientService.resetPassword(resetCode,password);
+			String message ="密码设置成功";
+			//重置码无效
+			if( state==0)
+				message="重置码无效";
+			//密码不满足要求
+			if( state ==-1)
+				message = "密码不满足要求";
+		model.addAttribute("message", message);
+		//重置密码成功
+		return SiteUtils.getPage("common.respasuccess");
+	}          
+	
+	/**
+	 * 激活邮箱
+	 * @param activeCode
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="activeEmail/{activeCode}",method=RequestMethod.GET)
 	public String  activeEmail(@PathVariable("activeCode")String activeCode,Model model){
 		if( ValidateUtil.isValidateStr(activeCode)){
 			Client client= clientService.findByActiveCode(activeCode);
@@ -136,6 +202,8 @@ public class CommonAction {
 		}
 		return clientJson;
 	}
+	
+	
 	public ClientService getClientService() {
 		return clientService;
 	}

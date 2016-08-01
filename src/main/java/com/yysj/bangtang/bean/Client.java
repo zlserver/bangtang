@@ -19,6 +19,8 @@ public class Client {
 
     private Date activelasttime;
 
+    private String resetcode;
+
     private String activecode;
 
     private Integer emailstatus;
@@ -91,6 +93,14 @@ public class Client {
 
     public void setActivelasttime(Date activelasttime) {
         this.activelasttime = activelasttime;
+    }
+
+    public String getResetcode() {
+        return resetcode;
+    }
+
+    public void setResetcode(String resetcode) {
+        this.resetcode = resetcode == null ? null : resetcode.trim();
     }
 
     public String getActivecode() {

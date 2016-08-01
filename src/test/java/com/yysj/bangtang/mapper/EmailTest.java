@@ -12,7 +12,7 @@ public class EmailTest {
 	public void email(){
 		//EmailUtils.sendMessage("你好", "594389970@qq.com");		
 		try {
-			EmailUtils.sendActiveEmail("zhouliangbiyesheji@163.com", "zho");
+			EmailUtils.sendEmail("zhouliangbiyesheji@163.com", "zho");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
