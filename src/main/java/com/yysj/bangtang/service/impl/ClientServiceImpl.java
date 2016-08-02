@@ -1,6 +1,5 @@
 package com.yysj.bangtang.service.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,10 +13,10 @@ import com.yysj.bangtang.myenum.EmailStateEnum;
 import com.yysj.bangtang.service.ClientService;
 import com.yysj.bangtang.task.EmailTask;
 import com.yysj.bangtang.task.EmailService;
-import com.yysj.bangtang.utils.EmailUtils;
 import com.yysj.bangtang.utils.ServiceUtils;
 import com.yysj.bangtang.utils.ValidateUtil;
 @Service("clientService")
+//@Transactional  运用事务
 public class ClientServiceImpl  implements ClientService {
 
 	private ClientMapper clientMapper;
@@ -175,6 +174,4 @@ public class ClientServiceImpl  implements ClientService {
 		}
 		return null;
 	}
-
-	
 }

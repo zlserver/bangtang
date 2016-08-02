@@ -5,7 +5,7 @@ import java.util.Date;
 import com.yysj.bangtang.myenum.ContentStateEnum;
 
 /**
- * 内容表,保存用户
+ * 内容表,保存用户发表过的动态，一个动态可能包含文字、图片（短视频）、阅读量、点赞数。
  * @author liang
  * @version 创建时间 2016年4月14日
  * 说明:
@@ -35,11 +35,30 @@ public class Content {
 	/**
 	 * 审核者
 	 */
-	private String accout;
+	private String checker;
 	/**
-	 * 内容
+	 * 文本内容
 	 */
-	private String content;
+	private String text;
+	/**
+	 * 多个图片保存路径，多图片路径之间以逗号（,）相隔。
+	 * 因为多个图片保存的目录相同，所以多个图片只保存一份目录路径，并保存在字符串的最前面并加上@符号区分。
+	 * 
+	 * 比如有2张图片路径如下：image/content/20160802/flower1.png,image/content/20160802/flower2.png,
+	 * 最终保存的在该变量中的值为@image/content/20160802/,flower1.png,flower2.png
+	 * 
+	 * 一份图片会保存两份，一个完整版，一个压缩版，压缩版图片保存路径就是在未压缩保存路径上加一个compress目录，
+	 * 比如image/content/20160802/flower1.png图片的压缩版保存路径为
+	 * image/content/20160802/compress/flower1.png
+	 */
+	private String picSavePath;
+	/**
+	 * 短视频保存路径，短视频的时间长度有限制，在配置文件中
+	 * 一份视频会保存两份，一个完整版，一个压缩版，压缩版视频保存路径就是在未压缩保存路径上加一个compress目录，
+	 * 比如video/content/20160802/flower1.avi短视频的压缩版保存路径为
+	 * video/content/20160802/compress/flower1.avi
+	 */
+	private String videoSavePath;
 	/**
 	 * ip地址
 	 */
@@ -79,17 +98,18 @@ public class Content {
 	public void setState(ContentStateEnum state) {
 		this.state = state;
 	}
-	public String getAccout() {
-		return accout;
+	public String getChecker() {
+		return checker;
 	}
-	public void setAccout(String accout) {
-		this.accout = accout;
+	public void setChecker(String checker) {
+		this.checker = checker;
 	}
-	public String getContent() {
-		return content;
+
+	public String getText() {
+		return text;
 	}
-	public void setContent(String content) {
-		this.content = content;
+	public void setText(String text) {
+		this.text = text;
 	}
 	public String getIp() {
 		return ip;
@@ -102,6 +122,18 @@ public class Content {
 	}
 	public void setPubTime(Date pubTime) {
 		this.pubTime = pubTime;
+	}
+	public String getPicSavePath() {
+		return picSavePath;
+	}
+	public void setPicSavePath(String picSavePath) {
+		this.picSavePath = picSavePath;
+	}
+	public String getVideoSavePath() {
+		return videoSavePath;
+	}
+	public void setVideoSavePath(String videoSavePath) {
+		this.videoSavePath = videoSavePath;
 	}
 		
 }

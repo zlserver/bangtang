@@ -66,7 +66,7 @@
 		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml" />
 		<!-- 数据源 -->
 		<property name="dataSource" ref="dataSource" />
-	</bean>
+	</bean>   
 	<!-- 通过MapperScannerConfigurer进行mapper扫描（建议使用） -->
 	<!-- mapper批量扫描，从mapper包中扫描mapper接口，自动创建代理对象并且在Spring容器中注册遵循规范：
 	将mapper.java和mapper.xml映射文件名保持一致，且在一个目录中，自动扫描出来的mapper的bean的id为mapper类名（首字母小写） -->
@@ -74,4 +74,14 @@
 	    <property name="basePackage" value="com.yysj.bangtang.mapper"/>
 	    <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
+	<!-- 在Spring配置文件中配置jdbc事务管理器，并启用注解驱动事务 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource" />
+   <!--启用注解驱动事务 ，默认情况下，它将用名称transactionManager寻找事务管理器（上面的事务管理器名称就为此）
+   可以通过@Transactional注解服务类，从而使其中的方法都具有事务性,当然也可以在某个方法是单独加事务,
+   @Transactional(readOnly=true) 该声明表示该方法中只能进行读操作
+   -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
 </beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yysj.bangtang.mapper.ContentMapper" >
+	<sql id="Base_Column_List" >
+    id,email,readCount,agreeCount,state,checker,text,
+    picSavePath,videoSavePath,ip,pubTime
+  </sql>
+	<insert id="insert"  parameterType="com.yysj.bangtang.bean.Content" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+			select uuid()
+		</selectKey>
+		insert into content (id,email,readCount,agreeCount,state,checker,text,picSavePath,videoSavePath,ip,pubTime) 
+		values (#{id,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{readCount,jdbcType=INTEGER}, 
+	      #{agreeCount,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{checker,jdbcType=VARCHAR}, 
+	      #{text,jdbcType=VARCHAR}, #{picSavePath,jdbcType=VARCHAR}, #{videoSavePath,jdbcType=VARCHAR}, 
+	      #{ip,jdbcType=VARCHAR}, #{pubTime,jdbcType=TIMESTAMP})	
+	</insert>
+	<select id="selectByEmail" resultType="com.yysj.bangtang.bean.Content" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from content
+	    where email = #{email,jdbcType=VARCHAR}
+	    order by pubTime desc 
+   </select>
+  <select id="selectByPrimaryKey" resultType="com.yysj.bangtang.bean.Content" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from content
+    where id = #{id,jdbcType=VARCHAR}
+   </select>
+  <select id="selectByState" resultType="com.yysj.bangtang.bean.Content" parameterType="com.yysj.bangtang.myenum.ContentStateEnum" >
+    select 
+    <include refid="Base_Column_List" />
+    from content
+    where state = #{state,jdbcType=VARCHAR}
+    order by pubTime desc 
+   </select>
+</mapper>

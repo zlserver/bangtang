@@ -1,7 +1,6 @@
 package com.yysj.bangtang.service;
 
 import com.yysj.bangtang.bean.Client;
-import com.yysj.bangtang.bean.custom.ClientCustom;
 import com.yysj.bangtang.myenum.EmailStateEnum;
 
 public interface ClientService {
@@ -83,4 +82,5 @@ public interface ClientService {
 	 * -1：密码不满足要求
 	 */
 	public int resetPassword(String resetCode, String password);
+	
 }
