@@ -27,7 +27,7 @@
 	    <property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240)   -->
 	     <property name="uploadTempDir" value="temp"/>    <!-- 上传文件的临时路径,上传完成后，临时目录中的临时文件会被自动清除   -->
 	     <property name="maxUploadSize" value="5242880"/><!--  最大文件大小5M,-1为无限止(-1)   -->
-	</bean> 
+	</bean>                                    
     <!-- 文件加载器，加载类路径下的配置文件jdbc.properties -->
     
 	<context:property-placeholder location="classpath:jdbc.properties" />

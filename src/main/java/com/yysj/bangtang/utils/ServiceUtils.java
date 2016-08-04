@@ -2,9 +2,12 @@ package com.yysj.bangtang.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 
 
 public class ServiceUtils {
@@ -65,7 +68,7 @@ public class ServiceUtils {
 		 * @param fileName
 		 * @return
 		 */
-		public static String getExt(String fileName){
+		public static String getExtFromFileName(String fileName){
 			
 			return fileName.substring(fileName.lastIndexOf(".")+1);
 		}
@@ -74,6 +77,18 @@ public class ServiceUtils {
 		 * @return 大写字符的uuid值
 		 */
 		public static String getUuid() {
-			 return UUID.randomUUID().toString().toUpperCase();
+			 return UUID.randomUUID().toString().replace("-", "").toUpperCase();
+		}
+		/**
+		 * 得到日期文件名，组成由sdf输出格式再加上当前毫秒数
+		 * @param sdf ,如果为null，则使用模式yyyyMMddhhMMss
+		 * @return
+		 */
+		public static String getDateFileName(SimpleDateFormat sdf)
+		{
+			if( sdf==null)
+				sdf = new SimpleDateFormat("yyyyMMddhhMMss");
+			
+			return sdf.format(new Date())+System.currentTimeMillis();
 		}
 }

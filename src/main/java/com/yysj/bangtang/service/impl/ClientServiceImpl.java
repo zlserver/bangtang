@@ -11,9 +11,10 @@ import com.yysj.bangtang.bean.ClientExample;
 import com.yysj.bangtang.mapper.ClientMapper;
 import com.yysj.bangtang.myenum.EmailStateEnum;
 import com.yysj.bangtang.service.ClientService;
+import com.yysj.bangtang.service.EmailService;
 import com.yysj.bangtang.task.EmailTask;
-import com.yysj.bangtang.task.EmailService;
 import com.yysj.bangtang.utils.ServiceUtils;
+import com.yysj.bangtang.utils.TokenGenerator;
 import com.yysj.bangtang.utils.ValidateUtil;
 @Service("clientService")
 //@Transactional  运用事务
@@ -157,7 +158,10 @@ public class ClientServiceImpl  implements ClientService {
 		//设置密码
 		client.setPassword(md5Ps);
 		//清空重置码
-		client.setResetcode(null);      
+		client.setResetcode(null);   
+		//重新生成token
+		String token =TokenGenerator.generatorToken(client.getEmail());
+		client.setToken(token);
 		//保存
 		updateClient(client);
 		return 1;

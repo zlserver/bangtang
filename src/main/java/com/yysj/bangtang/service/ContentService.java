@@ -1,10 +1,13 @@
 package com.yysj.bangtang.service;
 
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.yysj.bangtang.bean.Content;
 import com.yysj.bangtang.common.QueryResult;
 import com.yysj.bangtang.myenum.ContentStateEnum;
+import com.yysj.bangtang.vo.ContentVo;
 
 public interface ContentService {
 	/**
@@ -37,5 +40,11 @@ public interface ContentService {
 	 * @return
 	 */
 	public Page<Content> getScrollByState(ContentStateEnum state, int pageNumber,int pageSize);
+	/**
+	 * 发布图片
+	 * @param contentVo 内容
+	 * @return -1:上传图片数量超出了限制，0：上传的有非图片文件，1：发布成功
+	 */
+	public int publish(ContentVo contentVo);
 
 }

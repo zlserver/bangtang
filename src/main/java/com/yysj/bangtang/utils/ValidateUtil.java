@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.yysj.bangtang.exception.NullException;
@@ -41,15 +42,14 @@ public class ValidateUtil {
 	}
 	/**
 	 * 判断文件是否是图片
-	 * @param logo
+	 * @param pics
 	 * @return ture：图片；false：非图片格式
 	 */
-	public static boolean isImage(CommonsMultipartFile logo){
-		if( logo==null ||logo.getSize()<=0)
+	public static boolean isImage(MultipartFile pics){
+		if( pics==null ||pics.getSize()<=0)
 			return false;
-		String ext = ServiceUtils.getExt(logo.getOriginalFilename());
-		String contentType = logo.getContentType();
-		System.out.println(ext+":"+contentType);
+		String ext = ServiceUtils.getExtFromFileName(pics.getOriginalFilename()).toLowerCase();
+		String contentType = pics.getContentType().toLowerCase();
 		String exts= properties.getProperty("image.ext");
 		String types= properties.getProperty("image.type");
 		List<String> containExts = Arrays.asList(exts.split(",")) ;
@@ -58,7 +58,21 @@ public class ValidateUtil {
 			return true;
 		return false;
 	}
-	
+	/**
+	 * 判断多个文件是否都是图片
+	 * @param pics
+	 * @return ture：图片；false：非图片格式
+	 */
+	public static boolean isImage(List<MultipartFile> pics) {
+		if( pics!=null &&pics.size() > 0)
+		{
+			for( int i =0 ;i<pics.size();i++)
+				if( !isImage(pics.get(i)))
+					return false;
+			return true;
+		}else
+			return false;
+	}
 	/**
 	 * 判断是否是有效字符串。
 	 * @param str 字符串
@@ -120,4 +134,5 @@ public class ValidateUtil {
 			return false;
 		return true;
 	}
+	
 }

@@ -3,6 +3,7 @@
 <relativepath id="root" value="G:/filesystem/">
 	<!--用户头像保存相对路径-->
 	<relativepath  id="userPic"  value="image/userpic/" />
-	<relativepath  id="contextPic"  value="image/contextPic/" />
+	<relativepath  id="contentPic"  value="content/contentPic/" />
+	<relativepath  id="contentVideo"  value="content/contentVideo/" />
 	
 </relativepath>

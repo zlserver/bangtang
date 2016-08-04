@@ -31,7 +31,7 @@ public class Content {
 	/**
 	 * 状态
 	 */
-	private ContentStateEnum state;
+	private ContentStateEnum state=ContentStateEnum.PASS;
 	/**
 	 * 审核者
 	 */
@@ -42,10 +42,10 @@ public class Content {
 	private String text;
 	/**
 	 * 多个图片保存路径，多图片路径之间以逗号（,）相隔。
-	 * 因为多个图片保存的目录相同，所以多个图片只保存一份目录路径，并保存在字符串的最前面并加上@符号区分。
+	 * 因为多个图片保存的目录相同，所以多个图片只保存一份目录路径。
 	 * 
 	 * 比如有2张图片路径如下：image/content/20160802/flower1.png,image/content/20160802/flower2.png,
-	 * 最终保存的在该变量中的值为@image/content/20160802/,flower1.png,flower2.png
+	 * 最终保存的在该变量中的值为image/content/20160802/,flower1.png,flower2.png
 	 * 
 	 * 一份图片会保存两份，一个完整版，一个压缩版，压缩版图片保存路径就是在未压缩保存路径上加一个compress目录，
 	 * 比如image/content/20160802/flower1.png图片的压缩版保存路径为
@@ -66,7 +66,7 @@ public class Content {
 	/**
 	 * 发布时间
 	 */
-	private Date pubTime;
+	private Date pubTime=new Date();
 	public String getId() {
 		return id;
 	}

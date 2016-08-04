@@ -13,7 +13,7 @@ public final class TokenGenerator {
 		long  mills =System.currentTimeMillis();
 		String sourceData = ""+mills;
 		
-		return ServiceUtils.MD5Encode(sourceData)+EXTRA+email;
+		return sourceData+EXTRA+email;
 	}
 	
 	public static String getEmail(String token){

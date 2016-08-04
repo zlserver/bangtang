@@ -23,7 +23,8 @@ public enum OperationStatus {
 	TOKEN_UNACCORDANCE(2001,"token值不一致"),
 	
 
-	IMAGE_TYPE_ERROR(3001,"图片格式有误！");
+	IMAGE_TYPE_ERROR(3001,"图片格式有误！"),
+	IMAGE_COUNT_OUTLIMIT(3002,"图片数量超出了限制！");
 	
 	private final int status;
 	private final String message;
