@@ -68,6 +68,7 @@ public class CommonAction {
 				//抛出未知异常
 				status.setOperationStatus(OperationStatus.UNKNOW_EXCEPTION);
 				Log.error(this,"注册出现异常："+ e.getMessage());
+				e.printStackTrace();
 			}
 		}else{
 			status.setOperationStatus(OperationStatus.CLIENT_EMAIL_PASS_ERROR);

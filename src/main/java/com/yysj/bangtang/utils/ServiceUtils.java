@@ -81,14 +81,26 @@ public class ServiceUtils {
 		}
 		/**
 		 * 得到日期文件名，组成由sdf输出格式再加上当前毫秒数
-		 * @param sdf ,如果为null，则使用模式yyyyMMddhhMMss
+		 * @param sdf ,如果为null，则使用模式yyyyMMddhh
 		 * @return
 		 */
 		public static String getDateFileName(SimpleDateFormat sdf)
 		{
 			if( sdf==null)
-				sdf = new SimpleDateFormat("yyyyMMddhhMMss");
+				sdf = new SimpleDateFormat("yyyyMMddhh");
 			
 			return sdf.format(new Date())+System.currentTimeMillis();
+		}
+		/**
+		 * 得到日期格式的文件目录
+		 * @param sdf ,如果为null，则使用模式yyyy/MM/dd/hh
+		 * @return 例如：2016/08/03
+		 */
+		public static String getDateFileDir(SimpleDateFormat sdf)
+		{
+			if( sdf==null)
+				sdf = new SimpleDateFormat("yyyy/MM/dd/hh");
+			
+			return sdf.format(new Date());
 		}
 }

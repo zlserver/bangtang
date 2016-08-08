@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
-
 import com.yysj.bangtang.bean.Client;
 import com.yysj.bangtang.bean.ClientExample;
 import com.yysj.bangtang.mapper.ClientMapper;
@@ -67,8 +67,14 @@ public class ClientServiceImpl  implements ClientService {
 		String activeUrl="http://localhost:8080/bangtang/mobile/common/activeEmail/"+activeCode+".action"; 
 		sendContent.append("<h3>点击以下链接激活邮箱:</h3> <a href=\"")
 		.append(activeUrl).append("\">").append(activeUrl).append("</a>");
+		String subject ="eyemember邮箱验证";
 		//2.添加到发送任务队列中
-		EmailTask task = new EmailTask(EmailTask.TaskPriority.PRIORITY_NORMAL, email, sendContent.toString(),"eyemember邮箱验证");
+		SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setTo(email);
+		msg.setFrom("594389970@qq.com");
+	    msg.setText(sendContent.toString());
+	    msg.setSubject(subject);
+		EmailTask task = new EmailTask(EmailTask.TaskPriority.PRIORITY_NORMAL,msg);
 		EmailService.addTask(task);
 	}
 
@@ -138,8 +144,13 @@ public class ClientServiceImpl  implements ClientService {
 			String resetUrl="http://localhost:8080/bangtang/mobile/common/resetPasswordUI/"+resetCode+".action"; 
 			sendContent.append("<h3>点击以下链接重置密码:</h3> <a href=\"")
 			.append(resetUrl).append("\">").append(resetUrl).append("</a>");
+			String subject="eyemember找回密码";
 			
-			EmailTask task = new EmailTask(EmailTask.TaskPriority.PRIORITY_HIGH, email, sendContent.toString(),"eyemember找回密码");
+			SimpleMailMessage msg = new SimpleMailMessage();
+			msg.setTo(email);
+		    msg.setText(sendContent.toString());
+		    msg.setSubject(subject);
+			EmailTask task = new EmailTask(EmailTask.TaskPriority.PRIORITY_NORMAL,msg);
 			EmailService.addTask(task);
 			return 1;
 		

@@ -30,7 +30,7 @@
 	</bean>                                    
     <!-- 文件加载器，加载类路径下的配置文件jdbc.properties -->
     
-	<context:property-placeholder location="classpath:jdbc.properties" />
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:emailconfig.properties" />
 	
     <!-- 配置数据源 ,使用c3p0数据源-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
@@ -84,4 +84,28 @@
    -->
     <tx:annotation-driven transaction-manager="transactionManager" />
 
+	<!-- 配置线程池 -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	  <!-- 线程池维护线程的最少数量 --> 
+	  <property name="corePoolSize" value="5" />
+	 
+	  <!-- 线程池维护线程的最大数量 -->
+	  <property name="maxPoolSize" value="100" />
+	 <!-- 线程池所使用的缓冲队列 -->  
+	  <property name="queueCapacity" value="200" />
+	</bean>
+
+	<!-- 邮箱服务 -->
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+      <property name="javaMailProperties">
+        <props>
+            <prop key="mail.smtp.auth">true</prop>
+            <prop key="mail.smtp.starttls.enable">true</prop>
+        </props>
+      </property>
+      <property name="username" value="${email.username}"/>
+      <property name="password" value="${email.password}"/>
+     <property name="host" value="${email.host}"/>
+      <property name="port" value="${email.port}"/>
+   </bean>
 </beans>

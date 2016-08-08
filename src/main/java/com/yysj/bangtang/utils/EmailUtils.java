@@ -3,8 +3,6 @@ package com.yysj.bangtang.utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.Message.RecipientType;
@@ -43,7 +41,7 @@ public class EmailUtils {
        Properties properties = new Properties();  
        properties.setProperty("mail.smtp.auth", "true");//接受服务器认证  
        properties.setProperty("mail.transport.protocol", "smtp");//设置发送协议  
-       properties.setProperty("mail.host", emailpros.getProperty("email.serer"));//设置要连接的服务器地址，端口默认25  
+       properties.setProperty("mail.host", emailpros.getProperty("email.host"));//设置要连接的服务器地址，端口默认25  
        properties.setProperty("mail.smtp.port",emailpros.getProperty("email.port")); 
        properties.setProperty("mail.smtp.starttls.enable", "true");//接受服务器认证  
       
@@ -51,7 +49,7 @@ public class EmailUtils {
        
            protected PasswordAuthentication getPasswordAuthentication() { //返回用户名和密码  
                // TODO Auto-generated method stub  
-               return new PasswordAuthentication(emailpros.getProperty("email.account"), emailpros.getProperty("email.password")); //设置用户名和密码  
+               return new PasswordAuthentication(emailpros.getProperty("email.username"), emailpros.getProperty("email.password")); //设置用户名和密码  
            }  
        });  
        session.setDebug(true); //显示调试信息  
@@ -59,16 +57,15 @@ public class EmailUtils {
         * 构建邮件 
         */  
        Message msg = new MimeMessage(session);  
-       msg.setFrom(new InternetAddress(emailpros.getProperty("email.account")));//设置发送方地址  
+       msg.setFrom(new InternetAddress(emailpros.getProperty("email.username")));//设置发送方地址  
        msg.setSubject(subject);  
        msg.addRecipient(RecipientType.TO, new InternetAddress(toEmail)); //设置收件人的类型：TO:收件人;CC:抄送;BCC:暗送;和收件人  
-       msg.setContent(content, "text/html;charset=gbk");//设置发送内容，以及内容的类型和编码  
+       msg.setContent(content, emailpros.getProperty("email.defaultEncoding"));//设置发送内容，以及内容的类型和编码  
       /** 
         * 发送邮件 
         */  
        Transport.send(msg);
 	}
-	
 	/**
 	 * 发送邮件通知
 	 * @param toEmail 接收方邮箱

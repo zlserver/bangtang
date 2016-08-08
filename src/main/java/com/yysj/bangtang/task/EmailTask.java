@@ -1,5 +1,13 @@
 package com.yysj.bangtang.task;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+
+import com.yysj.bangtang.utils.EmailUtils;
+
 /**
  * 邮箱通知任务，目前包括两个任务：
  * 1.激活邮箱通知任务
@@ -11,7 +19,7 @@ package com.yysj.bangtang.task;
  * @author xcitie
  *
  */
-public class EmailTask {
+public class EmailTask implements Runnable{
 	/**
 	 * 任务优先级，数字大于0，数字越小优先级越高
 	 */
@@ -29,18 +37,30 @@ public class EmailTask {
 	 */
 	private String subject;
 	
+	 private MailSender mailSender;
+	 private SimpleMailMessage msg;
 	
-	public EmailTask() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public EmailTask(TaskPriority priority, String toEmail, String sendContent,String subject) {
+	/*public EmailTask(TaskPriority priority, String toEmail, String sendContent,String subject) {
 		super();
 		this.priority = priority;
 		this.toEmail = toEmail;
 		this.sendContent = sendContent;
 		this.subject = subject;
+		msg = new SimpleMailMessage();
+		msg.setTo(toEmail);
+	    msg.setText(sendContent);
+	    msg.setSubject(subject);
+	    
+	}*/
+	public EmailTask(TaskPriority priority,SimpleMailMessage msg){
+		this.msg=msg;
+		this.priority= priority;
 	}
+	
+	public void setMailSender(MailSender mailSender) {
+		this.mailSender = mailSender;
+	}
+
 	public String getToEmail() {
 		return toEmail;
 	}
@@ -79,5 +99,17 @@ public class EmailTask {
 		PRIORITY_NORMAL,
 		//优先级高
 		PRIORITY_HIGH;
+	}
+
+	public void run() {
+		try{
+			if(mailSender!=null)
+				mailSender.send(msg);
+			else
+				System.out.println("邮箱发送服务未注入");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+			//EmailUtils.sendEmail(this.getToEmail(), this.getSendContent(),this.getSubject());
 	}
 }

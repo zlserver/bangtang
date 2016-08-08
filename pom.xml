@@ -15,7 +15,7 @@
     <mysqldriver.version>5.1.37</mysqldriver.version> <!-- mysql驱动 -->
       <log4j.version>2.1</log4j.version> <!--  日志类 -->
    <slf4j.version>1.7.5</slf4j.version>
-   <spring.version>3.0.2.RELEASE</spring.version>  <!-- spring版本 -->
+   <spring.version>3.2.17.RELEASE</spring.version>  <!-- spring版本 -->
   	<junit.version>4.10</junit.version>  <!-- 测试类 -->
    <cglib.version>3.1</cglib.version>  <!-- 动态代理 -->
     <javassist.version>3.9.0.GA</javassist.version><!-- 提供@Resource,@Entity等注解接口，具体实现由Hibernate实现 -->
@@ -31,6 +31,7 @@
       <jackson.version>1.9.13</jackson.version>
       <dom4j.version>1.6.1</dom4j.version>
       <jaxen.version>1.1.6</jaxen.version>
+      <spring-integration-mail.version>3.0.6.RELEASE</spring-integration-mail.version>
   </properties>
   <dependencies>
  <!-- 分页插件 -->
@@ -52,13 +53,18 @@
     <artifactId>dom4j</artifactId>
     <version>${dom4j.version}</version>
 </dependency>
-  
-  <!-- http://mvnrepository.com/artifact/javax.mail/mail -->
+  <!-- https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-mail -->
 <dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-mail</artifactId>
+    <version>${spring-integration-mail.version}</version>
+</dependency>
+  <!-- http://mvnrepository.com/artifact/javax.mail/mail -->
+ <dependency>
     <groupId>javax.mail</groupId>
     <artifactId>mail</artifactId>
     <version>${eamil.version}</version>
-</dependency>
+</dependency> 
 <!-- jackson-mapper-asl和jackson-core-asl包是SPringMVC进行json交互的依赖包 -->
 <!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
 <dependency>

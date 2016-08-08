@@ -27,10 +27,14 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.yysj.bangtang.bean.Content;
 import com.yysj.bangtang.file.FilePath;
+import com.yysj.bangtang.task.ImageSizerTask;
+import com.yysj.bangtang.utils.Config;
+import com.yysj.bangtang.utils.ImageSizer;
 import com.yysj.bangtang.utils.ServiceUtils;
 import com.yysj.bangtang.utils.StreamTool;
 import com.yysj.bangtang.utils.TokenGenerator;
@@ -38,18 +42,16 @@ import com.yysj.bangtang.utils.TokenGenerator;
 //用于处理Android端上传过来的大文件，采用socket传输
 @Service("fileServer")
 public class FileServer {
-	 private ExecutorService executorService;//线程池
 	 private   int port=7871;//监听端口
 	 private boolean quit = false;//退出
 	 private ServerSocket server;
 	 private FilePath filePath;
 	 private ContentService contentService;
-	 
+	 //线程池
+	 private ThreadPoolTaskExecutor taskExecutor;
 	 
 	 public FileServer(){
 		 //this.port = port;
-		 //创建线程池，池中具有(cpu个数*50)条线程
-		 executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 50);
 		 System.out.println("文件服务类构造成功");
 	 }
 	 /**
@@ -82,7 +84,7 @@ public class FileServer {
 				         
 			           Socket socket = server.accept();
 			           //为支持多用户并发访问，采用线程池管理每一个用户的连接请求
-			           executorService.execute(new SocketTask(socket));
+			           taskExecutor.execute(new SocketTask(socket));
 				     }
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -144,88 +146,96 @@ public class FileServer {
 						String abPath =filePath.getPath(FilePath.FILE_ROOT);
 						String relativePath = filePath.getPath(FilePath.CONTENT_PIC);
 						//相对路径目录下在加上当前时间目录
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH");
-						String datapath=sdf.format(new Date());
+						String datapath=ServiceUtils.getDateFileDir(null);
 						relativePath+=datapath;
 						abPath+=relativePath;
+						//原图片保存路径
 						File dir = new File(abPath);
+						//压缩图片保存路径
+						File compdir = new File(abPath+"/compress");
 						if(!dir.exists()) 
 							dir.mkdirs();
-						
+						if( !compdir.exists())
+							compdir.mkdirs();
 						//上传图片个数
 						int count =Integer.parseInt(piccount);
 						//新建count个图片文件，和对应文件输出流，每个文件的大小
-						File[] pics = new File[count];
-						FileOutputStream[] fos=new FileOutputStream[count];
-						String[] pissiezestr= filelength.split(",");
-						String[] filenames= filename.split(",");
-						long[] picsizes=new long[count];
-						StringBuffer picSavePath = new StringBuffer(relativePath);
+						File[] pics = new File[count]; //存放原图片
+						File[] compresspics = new File[count]; //存放压缩图片
+						FileOutputStream[] fos=new FileOutputStream[count]; //原图片输出流
+						String[] pissiezestr= filelength.split(","); //每个图片文件的大小str
+						long[] picsizes=new long[count]; //每个图片文件的大小long
+						String[] filenames= filename.split(",");//每个图片的名称
+						StringBuffer picSavePath = new StringBuffer(relativePath);//图片保存路径
 						for( int i =0;i<count;i++){
+							
 							String savename = ServiceUtils.getDateFileName(null)+"."+ServiceUtils.getExtFromFileName(filenames[i]);
-							picSavePath.append(",").append(savename);
+							//新建原图片存放文件
 							pics[i]= new File(dir, savename);
+							//压缩图片存放文件
+							compresspics[i]=new File(compdir,savename);
 							fos[i]=new FileOutputStream(pics[i]);
 							picsizes[i]=Long.parseLong(pissiezestr[i]);
-
+							
+							picSavePath.append(",").append(savename);
 							System.out.println("文件"+i+""+filenames[i]+",大小："+picsizes[i]);
 						}
 						content.setPicSavePath(picSavePath.toString());
+						/*当前传输的文件已传输完毕，应该传输下一个文件
+						 * a.png  5
+						 * b.png  6
+						 * c.png  3
+						 * d.png  1
+						 * 总共14
+						 * length =0;
+						 * buffer=2
+					    loop读取次数      1      2      3     4      5      6      7     8
+						 *  buffer  2      2      2      2      2     2      2     1
+						 *  length  2      4     6(4)    3      5     7(5)   3     4(3)
+						 *取buffer  [0,2] [0,2]  [0,1]  
+						 * afos[0]  2      4      5               
+						 *取buffer               [1,2]  [0,2]  [0,2] [0,1]  
+						 * bfos[1]                 1      3     5     6     
+						 *取buffer                                   [1,2]  [0,2]  [0,0]
+						 * cfos[2]                                     1     3
+						 *取buffer                                                 [0,1]
+						 * dfos[3]                                                  1
+						 * length   2      4      1      3       5     1     3      1 
+						 */
 						
 						//传输数据
 						byte[] buffer = new byte[102400];
 						int len = -1;
 						long length = 0;
-						int i=0;
-							/*当前传输的文件已传输完毕，应该传输下一个文件
-							 * a.png  5
-							 * b.png  6
-							 * c.png  3
-							 * d.png  1
-							 * 总共14
-							 * length =0;
-							 * buffer=2
-						    loop读取次数      1      2      3     4      5      6      7     8
-							 *  buffer  2      2      2      2      2     2      2     1
-							 *  length  2      4     6(4)    3      5     7(5)   3     4(3)
-							 *取buffer  [0,2] [0,2]  [0,1]  
-							 * afos[0]  2      4      5               
-							 *取buffer               [1,2]  [0,2]  [0,2] [0,1]  
-							 * bfos[1]                 1      3     5     6     
-							 *取buffer                                   [1,2]  [0,2]  [0,0]
-							 * cfos[2]                                     1     3
-							 *取buffer                                                 [0,1]
-							 * dfos[3]                                                  1
-							 * length   2      4      1      3       5     1     3      1 
-							 */
-							while( (len=inStream.read(buffer)) != -1){//从输入流中读取数据写入到文件中
+						int index=0; //从第一个文件开始接收数据
+						//压缩图片的宽度
+						int width =Integer.parseInt(Config.getKey(Config.CONTENTPIC_COMPRESSWIDTH));
+						while( (len=inStream.read(buffer)) != -1){//从输入流中读取数据写入到文件中
+							length += len;
+							if( length>=picsizes[index])
+							{
+								length-=len;
+								int sulen =(int) (picsizes[index]-length);
+								fos[index].write(buffer, 0, sulen);
+								//开启线程压缩图片
+								new Thread(new ImageSizerTask(pics[index], compresspics[index], width, ServiceUtils.getExtFromFileName(filenames[index]))).start();
 								
-								length += len;
-								if( length>picsizes[i])
-								{
-									length-=len;
-									
-									int sulen =(int) (picsizes[i]-length);
-									fos[i].write(buffer, 0, sulen);
-									i++;//下一个文件
-									System.out.println("第"+i+"个文件");
-									length=len-sulen;
-									if( i<count)
-									fos[i].write(buffer, sulen,len-sulen);
-									
-								}else{
-									fos[i].write(buffer, 0, len);
-								}
+								index++;//下一个文件
+								if( index<count)
+								  fos[index].write(buffer, sulen,len-sulen);
+								length=len-sulen;
+							}else{
+								fos[index].write(buffer, 0, len);
 							}
-							//压缩图片
+						}
 							
 							//保存动态信息
 							contentService.publish(content);
 							
 							//关闭流
 							for(int j=0;j<count;j++)
-								if( fos[i]!=null)
-								fos[i].close();
+								if( fos[j]!=null)
+								fos[j].close();
 							inStream.close();
 							outStream.close();
 					}else //上传视频
@@ -235,18 +245,15 @@ public class FileServer {
 							String abPath =filePath.getPath(FilePath.FILE_ROOT);
 							String relativePath = filePath.getPath(FilePath.CONTENT_VIDEO);
 							//相对路径目录下在加上当前时间目录
-							SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH");
-							String datapath=sdf.format(new Date());
+							String datapath=ServiceUtils.getDateFileDir(null);
 							relativePath+=datapath;
 							abPath+=relativePath;
 							
 							File dir = new File(abPath);
 							if(!dir.exists()) 
 								dir.mkdirs();
-							SimpleDateFormat namesdf = new SimpleDateFormat("yyyyMMddhhMMss");
-							String savename = namesdf.format(new Date())+"."+ServiceUtils.getExtFromFileName(filename);;
+							String savename = ServiceUtils.getDateFileName(null)+"."+ServiceUtils.getExtFromFileName(filename);;
 							File confile = new File(dir, savename);
-							
 							
 							RandomAccessFile fileOutStream = new RandomAccessFile(confile, "rwd");
 							fileOutStream.seek(0);//移动文件指定的位置开始写入数据
@@ -294,6 +301,13 @@ public class FileServer {
 	@Autowired
 	public void setContentService(ContentService contentService) {
 		this.contentService = contentService;
+	}
+	public ThreadPoolTaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+	@Autowired
+	public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
 	}
 	 
 

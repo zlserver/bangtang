@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -19,14 +20,18 @@ import com.yysj.bangtang.file.FilePath;
 import com.yysj.bangtang.mapper.ContentMapper;
 import com.yysj.bangtang.myenum.ContentStateEnum;
 import com.yysj.bangtang.service.ContentService;
+import com.yysj.bangtang.task.ImageSizerTask;
 import com.yysj.bangtang.utils.Config;
 import com.yysj.bangtang.utils.ImageSizer;
+import com.yysj.bangtang.utils.ServiceUtils;
 import com.yysj.bangtang.utils.ValidateUtil;
 import com.yysj.bangtang.vo.ContentVo;
 
 @Service("contentService")
 public class ContentServiceImpl implements ContentService {
 	private ContentMapper contentMapper;
+	//线程池
+	private ThreadPoolTaskExecutor taskExecutor;
 	/**
 	 * 文件保存路径读取接口
 	 */
@@ -77,8 +82,7 @@ public class ContentServiceImpl implements ContentService {
 		//上传内容保存路径
 		String relativePath = filePath.getPath(FilePath.CONTENT_PIC);
 		//相对路径目录下在加上当前时间目录
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd/HH");
-		String datapath=sdf.format(new Date());
+		String datapath=ServiceUtils.getDateFileDir(null);
 		
 		
 		if(pics!=null && pics.size()>0){
@@ -104,7 +108,9 @@ public class ContentServiceImpl implements ContentService {
 						File resizedFile= new File(dir, fe.getName());
 						String width = Config.getKey(Config.CONTENTPIC_COMPRESSWIDTH);
 						int wid = Integer.parseInt(width);
-						ImageSizer.resize(fe.getFile(), resizedFile, wid, fe.getExt());
+						//开启线程执行
+						taskExecutor.execute(new ImageSizerTask(fe.getFile(), resizedFile, wid, fe.getExt()));
+						//	ImageSizer.resize(fe.getFile(), resizedFile, wid, fe.getExt());
 					}
 					
 					Content content = new Content();
@@ -159,5 +165,11 @@ public class ContentServiceImpl implements ContentService {
 	public void setFileHandler(FileHandler fileHandler) {
 		this.fileHandler = fileHandler;
 	}
-
+	public ThreadPoolTaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+	@Autowired
+	public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
+	}
 }
