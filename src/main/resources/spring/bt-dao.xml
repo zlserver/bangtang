@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    
+    <!-- redis配置文件 -->   
+  <context:property-placeholder location="classpath:redis/redis.properties" />
+	<!-- redis连接池配置 -->
+   <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"> 
+   		<!-- 最大连接数 --> 
+        <property name="maxTotal" value="${redis.maxTotal}" />  
+        <!-- 最多空闲连接数 -->
+        <property name="maxIdle" value="${redis.maxIdle}" />  
+        <!-- 当连接池资源耗尽时，调用者最大阻塞的时间，超时将跑出异常。单位，毫秒数;默认为-1.表示永不超时. -->
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+        <!-- 向调用者输出“链接”资源时，是否检测是有有效，如果无效则从连接池中移除，并尝试获取继续获取。默认为false。 -->  
+    	<property name="testOnBorrow" value="${redis.testOnBorrow}"/>  
+    	<!-- 向连接池“归还”链接时，是否检测“链接”对象的有效性。默认为false。 -->
+    	<property name="testOnReturn" value="${redis.testOnReturn}"/>
+    </bean> 
+    <!-- redis服务连接信息 -->
+      <bean id="redis1" class="redis.clients.jedis.JedisShardInfo">  
+          <constructor-arg index="0" type="java.lang.String" name="host" value="${redis1.host}" />  
+          <constructor-arg index="1"  type="int" name="port" value="${redis1.port}" />  
+      	<property name="password" value="${redis1.password}"></property>
+      </bean> 
+    
+    <!-- ShardedJedisPool连接池 -->
+ <!--   <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" scope="singleton">
+   	<constructor-arg index="0" ref="jedisPoolConfig"></constructor-arg>
+   	 <constructor-arg index="1">  
+            <list>  
+            	redis服务连接信息
+            	<ref bean="redis1"/>
+            </list>  
+        </constructor-arg>  
+   </bean> -->
+   
+   <bean id="jedisConnFactory" 
+    class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" 
+    p:use-pool="true"
+    p:poolConfig-ref="jedisPoolConfig"
+    p:shardInfo-ref="redis1"
+    p:hostName="${redis1.host}"
+    p:port="${redis1.port}"
+    p:password="${redis1.password}" 
+    />
+
+<!-- redis template definition -->
+<bean id="redisTemplate" 
+    class="org.springframework.data.redis.core.RedisTemplate" 
+    p:connection-factory-ref="jedisConnFactory"/>
+</beans>

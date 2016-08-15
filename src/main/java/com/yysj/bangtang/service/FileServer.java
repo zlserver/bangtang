@@ -39,7 +39,22 @@ import com.yysj.bangtang.utils.ServiceUtils;
 import com.yysj.bangtang.utils.StreamTool;
 import com.yysj.bangtang.utils.TokenGenerator;
 
-//用于处理Android端上传过来的大文件，采用socket传输
+/**
+ * 用于处理移动端发过来带图片或者短视频的动态，采用socket传输。
+ * 发布的动态有两种：1.图片[文字]2.短视频[文字]。 文字可选，如果发送带纯文字的动态可使用其它方法。
+ * 移动端在链接服务器端socket时会先发送一个请求头，请求头由头字段和字段值组成，每个头字段以分号(;)相隔。头内容如下：
+ * Content-Type=pic;Piccount=3;Content-Length=143253434;token=5511ca0210cfbangbang@zhouliang@163.com;filename=xxx.3gp;text=第1条动态
+ * 每个头字段的含义：
+ * Content-Type：传过来的动态中包含的文件是图片还是视频，可选值为pic/video
+ * Piccount:如果Content-Type值为pic，则Piccount表示将会传过来几张图片，否则该值为空字符串
+ * Content-Length:传过来文件的大小，如果Content-Type值为video，则表示短视频的大小；如果Content-Type值为pic，则表示传过来的图片的大小，多张图片以逗号(,)相隔，
+ * 例如Piccount=2，则Content-Length=237213,673822。
+ * token:表示用户的令牌值。
+ * filename:表示传过来的文件名称，同样如果传过来的是图片，表示图片的没名称，多张图片以逗号(,)相隔。
+ * text:发表的动态内容的文字信息。
+ * @author xcitie
+ *
+ */
 @Service("fileServer")
 public class FileServer {
 	 private   int port=7871;//监听端口
@@ -135,7 +150,7 @@ public class FileServer {
 					
 					String ip =socket.getLocalAddress().getHostAddress();
 					String email = TokenGenerator.getEmail(token);
-				
+					
 					Content content =new Content();
 					content.setEmail(email);
 					content.setIp(ip);
@@ -178,7 +193,6 @@ public class FileServer {
 							picsizes[i]=Long.parseLong(pissiezestr[i]);
 							
 							picSavePath.append(",").append(savename);
-							System.out.println("文件"+i+""+filenames[i]+",大小："+picsizes[i]);
 						}
 						content.setPicSavePath(picSavePath.toString());
 						/*当前传输的文件已传输完毕，应该传输下一个文件

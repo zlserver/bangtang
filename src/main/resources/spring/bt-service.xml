@@ -30,7 +30,7 @@
 	</bean>                                    
     <!-- 文件加载器，加载类路径下的配置文件jdbc.properties -->
     
-	<context:property-placeholder location="classpath:jdbc.properties,classpath:emailconfig.properties" />
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:emailconfig.properties,redis/redis.properties" />
 	
     <!-- 配置数据源 ,使用c3p0数据源-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
@@ -72,7 +72,7 @@
 	将mapper.java和mapper.xml映射文件名保持一致，且在一个目录中，自动扫描出来的mapper的bean的id为mapper类名（首字母小写） -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 	    <property name="basePackage" value="com.yysj.bangtang.mapper"/>
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 	<!-- 在Spring配置文件中配置jdbc事务管理器，并启用注解驱动事务 -->
     <bean id="transactionManager"

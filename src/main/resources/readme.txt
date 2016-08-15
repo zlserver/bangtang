@@ -1,7 +1,7 @@
 
 1.项目介绍
-2.github操作说明
-3.修改了
+使用spring4.2.7.RELEASE以便使用spring-redis
+
 
 移动端：
 注册,七天激活时间
