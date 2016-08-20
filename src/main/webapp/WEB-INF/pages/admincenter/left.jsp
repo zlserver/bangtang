@@ -23,18 +23,20 @@
 	setTimeout(function(){num=2},100);
 	alert(num);
 </script>
-
+<style>
+li{cursor:pointer;}
+</style>
 </head>
 <body bgcolor="#CCCCCC">
 	<div id="main">
 		<ul id="browser" class="filetree">
 			<li><img src="images/left_picture/folder.gif" /> 用户管理</span>
 				<ul>
-					<li onClick='parent.window.set_content();'>管理1<img
+					<li onClick='parent.window.set_content();'>用户列表<img
 						src="images/left_picture/file.gif" /></li>
 				</ul>
 				<ul>
-					<li onClick='parent.window.set_content();'>管理2<img
+					<li onClick='parent.window.set_content();'>用户查询<img
 						src="images/left_picture/file.gif" /></li>
 				</ul>
 			</li>
