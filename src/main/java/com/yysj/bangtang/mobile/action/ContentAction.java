@@ -3,6 +3,7 @@ package com.yysj.bangtang.mobile.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,12 +19,18 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.yysj.bangtang.bean.Client;
+import com.yysj.bangtang.bean.Content;
 import com.yysj.bangtang.file.FileHandler;
 import com.yysj.bangtang.file.FilePath;
+import com.yysj.bangtang.mobile.ContentJson;
 import com.yysj.bangtang.mobile.MyStatus;
 import com.yysj.bangtang.myenum.OperationStatus;
+import com.yysj.bangtang.redis.RContent;
 import com.yysj.bangtang.service.ContentService;
+import com.yysj.bangtang.utils.ServiceUtils;
 import com.yysj.bangtang.utils.TokenGenerator;
+import com.yysj.bangtang.utils.ValidateUtil;
 import com.yysj.bangtang.vo.ContentVo;
 
 @Controller
@@ -43,8 +50,8 @@ public class ContentAction {
 		String email =TokenGenerator.getEmail(token);
 		String ip =request.getRemoteHost();
 		List<MultipartFile> files =request.getFiles("pics");
-		System.out.println("---------------上传了："+files.size());
-		return new ContentVo(text, email, ip,files);
+		Client client =(Client) request.getAttribute("client");
+		return new ContentVo(text, email, ip,files,client);
 	}
 	/**
 	 * 上传图片动态
@@ -65,8 +72,24 @@ public class ContentAction {
 			e.printStackTrace();
 			status.setOperationStatus(OperationStatus.UNKNOW_EXCEPTION);
 		}
-		
 		return status;
+	}
+	
+	@RequestMapping(value="getContent",method=RequestMethod.GET)
+	public @ResponseBody ContentJson getContent(String id){
+		ContentJson contentJson =new ContentJson();
+		 RContent rc =null;
+		if( ValidateUtil.isValidateStr(id)){
+			rc =contentService.getBykey(id);
+			if( rc!=null){
+				List<RContent> list = new ArrayList<RContent>();
+				list.add(rc);
+				contentJson.setListContent(list);
+			}
+		}else
+			contentJson.setOperationStatus(OperationStatus.PARAM_ERROR);
+		
+		return contentJson;
 	}
 
 	public FilePath getFilePath() {

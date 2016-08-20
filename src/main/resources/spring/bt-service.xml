@@ -16,7 +16,7 @@
        <!-- 实例化的类默认在初始化应用上下文时就实力所有单实例的bean -->
        
     <!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入,如果没有设置则只能手动在该文件中配置bean -->
-    <context:component-scan base-package="com.yysj.bangtang.service,com.yysj.bangtang.file"/>
+    <context:component-scan base-package="com.yysj.bangtang.service,com.yysj.bangtang.file,com.yysj.bangtang.redis"/>
     <!-- 开启aop注解，并使用cglib创建代理-->
 	<!-- <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy> -->
 	
@@ -30,7 +30,7 @@
 	</bean>                                    
     <!-- 文件加载器，加载类路径下的配置文件jdbc.properties -->
     
-	<context:property-placeholder location="classpath:jdbc.properties,classpath:emailconfig.properties,redis/redis.properties" />
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:emailconfig.properties,classpath:redis/redis.properties" />
 	
     <!-- 配置数据源 ,使用c3p0数据源-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"

@@ -11,7 +11,7 @@
   </welcome-file-list>
   <context-param>
      <param-name>contextConfigLocation</param-name>
-  	 <param-value>classpath:spring/bt-service.xml</param-value>  <!-- 如果有多个配置文件可用逗号（建议）、空格分隔 -->
+  	 <param-value>classpath:spring/bt-service.xml,classpath:spring/bt-redis.xml</param-value>  <!-- 如果有多个配置文件可用逗号（建议）、空格分隔 -->
   </context-param>
   
   <!-- springmvc -->

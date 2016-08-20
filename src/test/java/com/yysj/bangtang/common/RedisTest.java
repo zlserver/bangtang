@@ -27,7 +27,7 @@ public class RedisTest {
 	private RedisTemplate<Serializable, Serializable>	redisTemplate;
 	@Before
 	public void init(){
-		ApplicationContext ac = new ClassPathXmlApplicationContext("spring/bt-service.xml","spring/bt-dao.xml");
+		ApplicationContext ac = new ClassPathXmlApplicationContext("spring/bt-service.xml","spring/bt-redis.xml");
 		//shardedJedisPool=ac.getBean(ShardedJedisPool.class);
 		redisTemplate = (RedisTemplate<Serializable, Serializable>) ac.getBean("redisTemplate");
 	}

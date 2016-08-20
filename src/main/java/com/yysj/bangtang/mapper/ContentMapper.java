@@ -4,12 +4,14 @@ import java.util.List;
 
 import com.yysj.bangtang.bean.Content;
 import com.yysj.bangtang.myenum.ContentStateEnum;
+import com.yysj.bangtang.redis.RContent;
 
 public interface ContentMapper {
 	int insert(Content content);
 
-	Content selectByPrimaryKey(String id);
-	
+	Content selectByPrimaryId(String id);
+
+	RContent selectByPrimaryKey(String key);
 	/**
 	 * 根据邮箱查询动态，按时间降序排列
 	 * @param email

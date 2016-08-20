@@ -10,8 +10,9 @@
        http://www.springframework.org/schema/context 
        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
     
+ <!--  <context:component-scan base-package="com.yysj.bangtang.redis"/> -->
     <!-- redis配置文件 -->   
-  <context:property-placeholder location="classpath:redis/redis.properties" />
+  <!-- <context:property-placeholder location="classpath:redis/redis.properties" /> -->
 	<!-- redis连接池配置 -->
    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"> 
    		<!-- 最大连接数 --> 

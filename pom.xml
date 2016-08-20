@@ -85,15 +85,14 @@
 <!-- jackson-mapper-asl和jackson-core-asl包是SPringMVC进行json交互的依赖包 -->
 <!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
 <dependency>
-    <groupId>org.codehaus.jackson</groupId>
-    <artifactId>jackson-mapper-asl</artifactId>
-    <version>${jackson.version}</version>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>2.4.3</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl -->
 <dependency>
-    <groupId>org.codehaus.jackson</groupId>
-    <artifactId>jackson-core-asl</artifactId>
-    <version>${jackson.version}</version>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.4.3</version>
 </dependency>
 
 
@@ -278,7 +277,50 @@
 	        <version>${jstl.version}</version>
 	    </dependency> 
   </dependencies>
+  
   <build>
     <finalName>bangtang</finalName>
+    <plugins>
+    	 <plugin>  
+              <groupId>org.apache.maven.plugins</groupId>  
+              <artifactId>maven-compiler-plugin</artifactId>  
+              <executions>  
+                  <execution>  
+                      <id>default-compile</id>  
+                      <phase>compile</phase>  
+                      <goals>  
+                          <goal>compile</goal>  
+                      </goals>  
+                  </execution>  
+              </executions>  
+              <configuration>  
+                  <encoding>UTF-8</encoding> 
+                  <compilerArguments>  
+                        <verbose />  
+                        <bootclasspath>${java.home}\lib\rt.jar;${java.home}\lib\jce.jar</bootclasspath>  
+                 </compilerArguments>   
+              </configuration>  
+          </plugin>  
+          
+          <!-- 使用UTF-8编码处理资源文件 ,没有设置版本因为该插件在超级POM中设定了-->
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <configuration>
+              <encoding>UTF-8</encoding>
+          </configuration>
+      </plugin>
+      
+     <!--  通过skip=true设置了跳过编译测试环节，这在运行项目时是可以的，因为项目运行时不需要关系test下代码的测试情况，但是在要运行test下的测试案例时要将skip设为false
+     		也可以通过每次执行mvn命令时加上-Dmaven.test.skip=true or false 来设置是否跳过测试。
+     		当然，默认情况下只会执行test/java包下面以
+      -->
+      <plugin>
+           <artifactId>maven-surefire-plugin</artifactId>
+           <configuration>
+               <skip>true</skip>  <!-- 跳过执行测试代码 -->
+           </configuration> 
+       </plugin>
+    </plugins>
   </build>
 </project>

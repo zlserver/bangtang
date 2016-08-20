@@ -22,11 +22,18 @@
 	    where email = #{email,jdbcType=VARCHAR}
 	    order by pubTime desc 
    </select>
-  <select id="selectByPrimaryKey" resultType="com.yysj.bangtang.bean.Content" parameterType="java.lang.String" >
+  <select id="selectByPrimaryId" resultType="com.yysj.bangtang.bean.Content" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from content
     where id = #{id,jdbcType=VARCHAR}
+   </select>
+    <select id="selectByPrimaryKey" resultType="com.yysj.bangtang.redis.RContent" parameterType="java.lang.String" >
+ select 
+    id,co.email,readCount,agreeCount,text,
+    picSavePath,videoSavePath,pubTime,gender,nation,picpath,nickname
+    from content co  , client c
+    where id = #{id,jdbcType=VARCHAR} and co.email =  c.email 
    </select>
   <select id="selectByState" resultType="com.yysj.bangtang.bean.Content" parameterType="com.yysj.bangtang.myenum.ContentStateEnum" >
     select 

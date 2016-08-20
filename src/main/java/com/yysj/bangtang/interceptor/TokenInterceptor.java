@@ -46,8 +46,10 @@ public class TokenInterceptor implements HandlerInterceptor {
 				//2.查询数据库
 				Client client =clientService.findByEmail(email);
 				if( client !=null ){
-					if( token.equals(client.getToken()))
+					if( token.equals(client.getToken())){
+						request.setAttribute("client", client);
 						return true;
+					}
 				}
 		    }
 		} catch (Exception e) {

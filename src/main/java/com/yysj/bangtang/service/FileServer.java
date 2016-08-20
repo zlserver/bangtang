@@ -1,7 +1,6 @@
 package com.yysj.bangtang.service;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,31 +9,23 @@ import java.io.RandomAccessFile;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.yysj.bangtang.bean.Content;
 import com.yysj.bangtang.file.FilePath;
+import com.yysj.bangtang.mapper.ClientMapper;
+import com.yysj.bangtang.redis.PublishContentThread;
+import com.yysj.bangtang.redis.RContent;
+import com.yysj.bangtang.redis.RContentDao;
 import com.yysj.bangtang.task.ImageSizerTask;
 import com.yysj.bangtang.utils.Config;
-import com.yysj.bangtang.utils.ImageSizer;
+import com.yysj.bangtang.utils.Log;
 import com.yysj.bangtang.utils.ServiceUtils;
 import com.yysj.bangtang.utils.StreamTool;
 import com.yysj.bangtang.utils.TokenGenerator;
@@ -64,7 +55,8 @@ public class FileServer {
 	 private ContentService contentService;
 	 //线程池
 	 private ThreadPoolTaskExecutor taskExecutor;
-	 
+	 private ClientMapper clientMapper;
+	 private RContentDao rContentDao;
 	 public FileServer(){
 		 //this.port = port;
 		 System.out.println("文件服务类构造成功");
@@ -102,8 +94,7 @@ public class FileServer {
 			           taskExecutor.execute(new SocketTask(socket));
 				     }
 				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+        				}
 			}
 		}).start();
 
@@ -117,10 +108,10 @@ public class FileServer {
 		}
 		
 		public void run() {
-			
+			PushbackInputStream inStream =null;
+			OutputStream outStream =null;
 			try {
-				System.out.println("accepted connection "+ socket.getInetAddress()+ ":"+ socket.getPort());
-				PushbackInputStream inStream = new PushbackInputStream(socket.getInputStream());
+				 inStream = new PushbackInputStream(socket.getInputStream());
 				//得到客户端发来的第一行协议数据：Content-Type=pic;Piccount=3;Content-Length=143253434;token=5511ca0210cfbangbang@zhouliang@163.com;filename=xxx.3gp;text=第1条动态
 				String head = StreamTool.readLine(inStream);
 					
@@ -138,10 +129,11 @@ public class FileServer {
 					String token = URLDecoder.decode(items[3].substring(items[3].indexOf("=")+1), "UTF-8");
 					String filename = URLDecoder.decode(items[4].substring(items[4].indexOf("=")+1), "UTF-8");
 					String text = URLDecoder.decode(items[5].substring(items[5].indexOf("=")+1), "UTF-8");
-					System.out.println("contentType："+ contentType+" piccount:"+piccount+" filelength:"+filelength+" token:"+token+" filename:"+filename+" text:"+text);
+					Log.info(this, "contentType："+ contentType+" piccount:"+piccount+" filelength:"+filelength+" token:"+token+" filename:"+filename+" text:"+text);
+					//System.out.println("contentType："+ contentType+" piccount:"+piccount+" filelength:"+filelength+" token:"+token+" filename:"+filename+" text:"+text);
 					
 
-					OutputStream outStream = socket.getOutputStream();
+					outStream = socket.getOutputStream();
 					//回复客户端可以传输数据了
 					String response = "status=1\r\n";
 					//服务器收到客户端的请求信息后，给客户端返回响应信息：status=1
@@ -155,6 +147,7 @@ public class FileServer {
 					content.setEmail(email);
 					content.setIp(ip);
 					content.setText(text);
+					
 					//上传图片
 					if( contentType.equals("pic")){
 						//上传内容保存路径
@@ -242,16 +235,11 @@ public class FileServer {
 								fos[index].write(buffer, 0, len);
 							}
 						}
-							
-							//保存动态信息
-							contentService.publish(content);
-							
 							//关闭流
 							for(int j=0;j<count;j++)
 								if( fos[j]!=null)
 								fos[j].close();
-							inStream.close();
-							outStream.close();
+							
 					}else //上传视频
 						if( contentType.equals("video")){
 							long filesize= Long.parseLong(filelength);
@@ -278,23 +266,26 @@ public class FileServer {
 								fileOutStream.write(buffer, 0, len);
 								length += len;
 							}
-							
+							//文件上传完成
 							if(length==filesize) 
-							{
-								//文件上传完成
-								content.setVideoSavePath(relativePath+"/"+savename);
-								contentService.publish(content);
-							}
-							fileOutStream.close();					
-							inStream.close();
-							outStream.close();
+							   content.setVideoSavePath(relativePath+"/"+savename);
+								
+							fileOutStream.close();	
 					}
-					
+					//保存动态信息
+					contentService.publish(content);
+					//保存到redis中
+					RContent rc = new RContent(content,clientMapper.selectByPrimaryKey(email));
+					taskExecutor.execute(new PublishContentThread(rc, rContentDao));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}finally{
 	            try {
+	            	if( inStream!=null)
+	            		inStream.close();
+	            	if(outStream!=null)
+	            		outStream.close();
 	                if(socket!=null && !socket.isClosed()) socket.close();
 	                //保存或更新文件
 	            } catch (IOException e) {}
@@ -322,6 +313,20 @@ public class FileServer {
 	@Autowired
 	public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
 		this.taskExecutor = taskExecutor;
+	}
+	public ClientMapper getClientMapper() {
+		return clientMapper;
+	}
+	@Autowired
+	public void setClientMapper(ClientMapper clientMapper) {
+		this.clientMapper = clientMapper;
+	}
+	public RContentDao getrContentDao() {
+		return rContentDao;
+	}
+	@Autowired
+	public void setrContentDao(RContentDao rContentDao) {
+		this.rContentDao = rContentDao;
 	}
 	 
 

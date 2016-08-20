@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.yysj.bangtang.bean.Content;
 import com.yysj.bangtang.common.QueryResult;
 import com.yysj.bangtang.myenum.ContentStateEnum;
+import com.yysj.bangtang.redis.RContent;
 import com.yysj.bangtang.vo.ContentVo;
 
 public interface ContentService {
@@ -22,6 +23,8 @@ public interface ContentService {
 	 * @return
 	 */
 	public Content getById(String id);
+	
+	public RContent getBykey(String key);
 
 	/**
 	 * 根据邮箱分页查询用户的动态内容

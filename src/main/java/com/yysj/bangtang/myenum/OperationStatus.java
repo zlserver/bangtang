@@ -19,12 +19,12 @@ public enum OperationStatus {
 	CLIENT_RESETCODE_INVALIDATE(1005,"重置码无效"),
 	CLIENT_PASSWORD_INVALIDATE(1006,"密码不满足要求"),
 	
-	
 	TOKEN_UNACCORDANCE(2001,"token值不一致"),
 	
-
 	IMAGE_TYPE_ERROR(3001,"图片格式有误！"),
-	IMAGE_COUNT_OUTLIMIT(3002,"图片数量超出了限制！");
+	IMAGE_COUNT_OUTLIMIT(3002,"图片数量超出了限制！"),
+	
+	CONTENT_NO_EXIST(4000,"动态不存在!");
 	
 	private final int status;
 	private final String message;
