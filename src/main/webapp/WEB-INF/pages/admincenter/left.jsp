@@ -23,20 +23,24 @@
 
 </head>
 <body bgcolor="#CCCCCC">
-
 	<div id="main">
 		<ul id="browser" class="filetree">
-			<li><img src="images/left_picture/folder.gif" /> hello word</span>
+			<li><img src="images/left_picture/folder.gif" /> 用户管理</span>
 				<ul>
-					<li onClick='parent.window.set_content();'>this is first HTML！<img
+					<li onClick='parent.window.set_content();'>管理1<img
 						src="images/left_picture/file.gif" /></li>
-				</ul></li>
+				</ul>
+				<ul>
+					<li onClick='parent.window.set_content();'>管理2<img
+						src="images/left_picture/file.gif" /></li>
+				</ul>
+			</li>
 
-			<li><img src="images/left_picture/folder.gif" /> 123</span>
+			<li><img src="images/left_picture/folder.gif" /> 数据管理</span>
 				<ul>
 					<li>blabla</li>
 					<li>blabla</li>
-					<li><img src="images/left_picture/folder.gif" /> 123</span>
+					<li><img src="images/left_picture/folder.gif" /> 管理1</span>
 						<ul>
 							<li>blabla</li>
 							<li>blabla</li>

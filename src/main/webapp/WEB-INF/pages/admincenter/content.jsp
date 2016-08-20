@@ -4,83 +4,81 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>内容</title>
-
+<title>无标题文档</title>
+</head>
 <style>
-.div_headline{
-	width:10%;
+td {
+	width:100px;
 	height:20px;
-	background-color:#CCC;
-	float:left;
-	position:relative;
-}
-.div_contentline{
-	width:10%;
-	height:20px;
-	float:left;
-	position:relative;
 }
 </style>
-<script type="text/javascript">
-function change_in()
+<script>
+window.onload=function()
 {
-	var falg = true;
-	var divid = document.getElementById("content_data");
-	var tag = divid.getElementsByTagName("div"); 
-	var len = tag.length;
-		for(var i = 0; i < len; i++)
+	var aR=[];
+	for (var a=0;a<100;a++)
+	{
+		aR.push(a);
+	}
+	var oBody = document.getElementById("tB");
+	for(var i=0; i<aR.length;i++)
+	{
+		var oTr = document.createElement("tr");
+		for(j=0;j<10;j++)
 		{
-			tag.item(i).style.backgroundColor="#ccc";
+			var oTd = document.createElement("td");
+			oTd.innerHTML=aR[i];
+			oTr.appendChild(oTd);
 		}
-}
-function change_out()
-{
-	var falg = true;
-	var divid = document.getElementById("content_data");
-	var tag = divid.getElementsByTagName("div"); 
-	var len = tag.length;
-		for(var i = 0; i < len; i++)
+		oBody.appendChild(oTr);
+	}
+	for(i=0;i<oBody.rows.length;i++)
+	{
+		if(i%2==0)
 		{
-			tag.item(i).style.backgroundColor="";
+			oBody.rows[i].style.backgroundColor="#ccc";
 		}
+	}
+	var color='';
+	for(i=0;i<oBody.rows.length;i++)
+	{ 
+		oBody.rows[i].onmouseover=function(){
+			color=this.style.backgroundColor;
+			this.style.backgroundColor="red";
+		}
+		oBody.rows[i].onmouseout=function(){
+		    this.style.backgroundColor=color;
+		}
+		oBody.rows[i].onclick=function(){
+			parent.window.document.set_all_user(oBody.rows[i].cells[0].innerHTML);
+		}
+	}
 }
-function sign_user_new(){
-	var div = document.getElementById("content_data");
-	window.open("sign_user.html");
- }
 </script>
-</head>
 <base href="<%=basePath %>" />
 <body>
-<h1 align="center">所有用户的信息</h1>
-<div id="headline_div">
-	<div id="hesdline" align="center"  class="div_headline">用户昵称</div>
-	<div id="hesdline" align="center"  class="div_headline">密码</div>
-	<div id="hesdline" align="center"  class="div_headline">性别</div>
-	<div id="hesdline" align="center"  class="div_headline">国籍</div>
-	<div id="hesdline" align="center"  class="div_headline">学习语言</div>
-	<div id="hesdline" align="center"  class="div_headline">激活状态</div>
-	<div id="hesdline" align="center"  class="div_headline">注册时间</div>
-	<div id="hesdline" align="center"  class="div_headline">登陆次数</div>
-	<div id="hesdline" align="center"  class="div_headline">登录时间</div>
-	<div id="hesdline" align="center"  class="div_headline">登录设备</div>
-</div>
-<div  id="content_data"  onMouseOver='change_in();' onMouseOut='change_out();' onClick='sign_user_new();'>
-	<div id="name" align="center"  class="div_contentline">s</div>
-	<div id="password" align="center"  class="div_contentline">s</div>
-	<div id="gender" align="center"  class="div_contentline">s</div>
-	<div id="nation" align="center"  class="div_contentline">s</div>
-	<div id="language" align="center"  class="div_contentline">s</div>
-	<div id="state" align="center"  class="div_contentline">s</div>
-	<div id="regTime" align="center"  class="div_contentline">s</div>
-	<div id="loginCount" align="center"  class="div_contentline">s</div>
-	<div id="reLoTime" align="center"  class="div_contentline">s</div>
-	<div id="machine" align="center"  class="div_contentline">s</div>
-</div>
+<h2 align="center">所有用户的信息</h2>
+<table border="1" id="data">
+	<thead>
+		<tr>
+			<td>用户昵称</td>
+			<td>密码</td>
+			<td>性别</td>
+			<td>国籍</td>
+			<td>学习语言</td>
+			<td>激活状态</td>
+			<td>注册时间</td>
+			<td>登陆次数</td>
+			<td>登录时间</td>
+			<td>登录设备</td>
+		</tr>
+	</thead>
+	<tbody id="tB">
+	</tbody>
+</table>
 </body>
 </html>
