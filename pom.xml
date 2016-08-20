@@ -15,7 +15,7 @@
     <mysqldriver.version>5.1.37</mysqldriver.version> <!-- mysql驱动 -->
       <log4j.version>2.1</log4j.version> <!--  日志类 -->
    <slf4j.version>1.7.5</slf4j.version>
-   <spring.version>3.0.2.RELEASE</spring.version>  <!-- spring版本 -->
+   <spring.version>4.2.7.RELEASE</spring.version>  <!-- spring版本 -->
   	<junit.version>4.10</junit.version>  <!-- 测试类 -->
    <cglib.version>3.1</cglib.version>  <!-- 动态代理 -->
     <javassist.version>3.9.0.GA</javassist.version><!-- 提供@Resource,@Entity等注解接口，具体实现由Hibernate实现 -->
@@ -28,15 +28,75 @@
      <jsr250.version>1.0</jsr250.version> <!-- JSR-250注解 -->
       <json.version>2.4</json.version>
       <eamil.version>1.4</eamil.version>
+      <jackson.version>1.9.13</jackson.version>
+      <dom4j.version>1.6.1</dom4j.version>
+      <jaxen.version>1.1.6</jaxen.version>
+      <spring-integration-mail.version>3.0.6.RELEASE</spring-integration-mail.version>
+ 	  <jedis.version>2.8.1</jedis.version><!-- redis客户端 -->
+ 	  <redis.version>1.7.2.RELEASE</redis.version>
   </properties>
   <dependencies>
+  <!-- spring对redis的支持 -->
+    <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-redis</artifactId>
+        <version>${redis.version}</version>
+    </dependency>
+   <!--  redis客户端 -->
+  <dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+    <version>${jedis.version}</version>
+    <type>jar</type>
+    <scope>compile</scope>
+</dependency>
   
-  <!-- http://mvnrepository.com/artifact/javax.mail/mail -->
+ <!-- 分页插件 -->
+  <dependency>
+    <groupId>com.github.pagehelper</groupId>
+    <artifactId>pagehelper</artifactId>
+    <version>4.1.6</version>
+</dependency>
+  <!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
 <dependency>
+    <groupId>jaxen</groupId>
+    <artifactId>jaxen</artifactId>
+    <version>${jaxen.version}</version>
+</dependency>
+  
+  <!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+<dependency>
+    <groupId>dom4j</groupId>
+    <artifactId>dom4j</artifactId>
+    <version>${dom4j.version}</version>
+</dependency>
+  <!-- https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-mail -->
+<dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-mail</artifactId>
+    <version>${spring-integration-mail.version}</version>
+</dependency>
+  <!-- http://mvnrepository.com/artifact/javax.mail/mail -->
+ <dependency>
     <groupId>javax.mail</groupId>
     <artifactId>mail</artifactId>
     <version>${eamil.version}</version>
+</dependency> 
+<!-- jackson-mapper-asl和jackson-core-asl包是SPringMVC进行json交互的依赖包 -->
+<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>2.4.3</version>
 </dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.4.3</version>
+</dependency>
+
+
+
    <!-- json格式依赖jar -->
 	<dependency>
 		<groupId>net.sf.json-lib</groupId>
@@ -217,7 +277,50 @@
 	        <version>${jstl.version}</version>
 	    </dependency> 
   </dependencies>
+  
   <build>
     <finalName>bangtang</finalName>
+    <plugins>
+    	 <plugin>  
+              <groupId>org.apache.maven.plugins</groupId>  
+              <artifactId>maven-compiler-plugin</artifactId>  
+              <executions>  
+                  <execution>  
+                      <id>default-compile</id>  
+                      <phase>compile</phase>  
+                      <goals>  
+                          <goal>compile</goal>  
+                      </goals>  
+                  </execution>  
+              </executions>  
+              <configuration>  
+                  <encoding>UTF-8</encoding> 
+                  <compilerArguments>  
+                        <verbose />  
+                        <bootclasspath>${java.home}\lib\rt.jar;${java.home}\lib\jce.jar</bootclasspath>  
+                 </compilerArguments>   
+              </configuration>  
+          </plugin>  
+          
+          <!-- 使用UTF-8编码处理资源文件 ,没有设置版本因为该插件在超级POM中设定了-->
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <configuration>
+              <encoding>UTF-8</encoding>
+          </configuration>
+      </plugin>
+      
+     <!--  通过skip=true设置了跳过编译测试环节，这在运行项目时是可以的，因为项目运行时不需要关系test下代码的测试情况，但是在要运行test下的测试案例时要将skip设为false
+     		也可以通过每次执行mvn命令时加上-Dmaven.test.skip=true or false 来设置是否跳过测试。
+     		当然，默认情况下只会执行test/java包下面以
+      -->
+      <plugin>
+           <artifactId>maven-surefire-plugin</artifactId>
+           <configuration>
+               <skip>true</skip>  <!-- 跳过执行测试代码 -->
+           </configuration> 
+       </plugin>
+    </plugins>
   </build>
 </project>

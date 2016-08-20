@@ -7,18 +7,39 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.github.pagehelper.PageHelper;
 import com.yysj.bangtang.bean.Client;
+import com.yysj.bangtang.myenum.EmailStateEnum;
+import com.yysj.bangtang.service.ClientService;
 
 public class ClientMapperTest {
 	private static SqlSessionFactory sqlSessionFactory;
 	private static ApplicationContext ac;
-	/*@Before
+	@Before
 	public void init(){
-		 ac = new ClassPathXmlApplicationContext("bt-service.xml");
+		 ac = new ClassPathXmlApplicationContext("spring/bt-service.xml");
 		 sqlSessionFactory= ac.getBean(SqlSessionFactory.class);
 	}
 	
-	*//**
+	@Test
+	public void testTrans(){
+		ClientService clientService= ac.getBean(ClientService.class);
+		try {
+			//clientService.testTran();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	//测试分页
+	@Test
+	public void testScroll(){
+		ClientMapper cm =ac.getBean(ClientMapper.class);
+		PageHelper.startPage(1, 10);
+		
+	}
+	/**
 	 * 测试通过mapper方式来实现dao层接口
 	 *//*
 	@Test
@@ -71,6 +92,7 @@ public class ClientMapperTest {
 			 //第二次发起请求，根据邮箱查询客户
 			//使用sqlSession2执行commit()操作
 		    ClientMapper cm2 =sqlSession2.getMapper(ClientMapper.class);
+		    //开启了二级缓存，会直接从缓存中取数据
 		    Client c2 =cm2.findByEmail("594389970@qq.com");
 			
 			c2.setNickName("张三");

@@ -16,7 +16,7 @@
        <!-- 实例化的类默认在初始化应用上下文时就实力所有单实例的bean -->
        
     <!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入,如果没有设置则只能手动在该文件中配置bean -->
-    <context:component-scan base-package="com.yysj.bangtang.service"/>
+    <context:component-scan base-package="com.yysj.bangtang.service,com.yysj.bangtang.file,com.yysj.bangtang.redis"/>
     <!-- 开启aop注解，并使用cglib创建代理-->
 	<!-- <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy> -->
 	
@@ -25,29 +25,13 @@
 	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >  
 	    <property name="defaultEncoding" value="UTF-8"/> <!-- 默认编码 (ISO-8859-1)   -->
 	    <property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240)   -->
-	     <property name="uploadTempDir" value="/temp"/>    <!-- 上传文件的临时路径,上传完成后，临时目录中的临时文件会被自动清除   -->
+	     <property name="uploadTempDir" value="temp"/>    <!-- 上传文件的临时路径,上传完成后，临时目录中的临时文件会被自动清除   -->
 	     <property name="maxUploadSize" value="5242880"/><!--  最大文件大小5M,-1为无限止(-1)   -->
-	</bean> 
+	</bean>                                    
     <!-- 文件加载器，加载类路径下的配置文件jdbc.properties -->
     
-	<context:property-placeholder location="classpath:jdbc.properties" />
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:emailconfig.properties,classpath:redis/redis.properties" />
 	
-    <!-- jdbc.driverClass=com.mysql.jdbc.Driver
-jdbc.jdbcUrl=jdbc:mysql://localhost:3306/bangtang?useUnicode=true&amp;characterEncoding=UTF-8
-jdbc.user=root
-jdbc.password=123456
-连接池中保留最大连接数Default:15
-jdbc.maxPoolSize=30
-连接池中保留最小连接数
-jdbc.minPoolSize=5
-初始化时获取连接数取值应在minPoolSize和maxPoolSize的间Default:3
-jdbc.initialPoolSize=6
-最大空闲时间,120秒内未使用则连接被丢弃若为0则永不丢弃Default:0
-jdbc.maxIdleTime=120
-当连接池中连接耗尽时候c3p0次同时获取连接数Default:3
-jdbc.acquireIncrement=3
- 每3000秒检查所有连接池中空闲连接Default:0
-jdbc.idleConnectionTestPeriod=3000 -->
     <!-- 配置数据源 ,使用c3p0数据源-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" >
@@ -82,12 +66,46 @@ jdbc.idleConnectionTestPeriod=3000 -->
 		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml" />
 		<!-- 数据源 -->
 		<property name="dataSource" ref="dataSource" />
-	</bean>
+	</bean>   
 	<!-- 通过MapperScannerConfigurer进行mapper扫描（建议使用） -->
 	<!-- mapper批量扫描，从mapper包中扫描mapper接口，自动创建代理对象并且在Spring容器中注册遵循规范：
 	将mapper.java和mapper.xml映射文件名保持一致，且在一个目录中，自动扫描出来的mapper的bean的id为mapper类名（首字母小写） -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 	    <property name="basePackage" value="com.yysj.bangtang.mapper"/>
-	    <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
+	<!-- 在Spring配置文件中配置jdbc事务管理器，并启用注解驱动事务 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource" />
+   <!--启用注解驱动事务 ，默认情况下，它将用名称transactionManager寻找事务管理器（上面的事务管理器名称就为此）
+   可以通过@Transactional注解服务类，从而使其中的方法都具有事务性,当然也可以在某个方法是单独加事务,
+   @Transactional(readOnly=true) 该声明表示该方法中只能进行读操作
+   -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 配置线程池 -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	  <!-- 线程池维护线程的最少数量 --> 
+	  <property name="corePoolSize" value="5" />
+	 
+	  <!-- 线程池维护线程的最大数量 -->
+	  <property name="maxPoolSize" value="100" />
+	 <!-- 线程池所使用的缓冲队列 -->  
+	  <property name="queueCapacity" value="200" />
+	</bean>
+
+	<!-- 邮箱服务 -->
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+      <property name="javaMailProperties">
+        <props>
+            <prop key="mail.smtp.auth">true</prop>
+            <prop key="mail.smtp.starttls.enable">true</prop>
+        </props>
+      </property>
+      <property name="username" value="${email.username}"/>
+      <property name="password" value="${email.password}"/>
+     <property name="host" value="${email.host}"/>
+      <property name="port" value="${email.port}"/>
+   </bean>
 </beans>

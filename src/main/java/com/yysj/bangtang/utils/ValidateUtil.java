@@ -1,8 +1,78 @@
 package com.yysj.bangtang.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import com.yysj.bangtang.exception.NullException;
 
 public class ValidateUtil {
+	
+	private static Properties properties ;
+	static{
+		InputStream is= ValidateUtil.class.getClassLoader().getResourceAsStream("filetype.properties");
+		properties=new Properties();
+		try {
+			properties.load(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("加载文件类型格式配置文件出错!");
+		}
+	}
+	/**
+	 * 判断是否是要求图片格式，图片格式配置文件在filetype.properties文件中
+	 * @param ext 后缀名
+	 * @param contentType  格式
+	 * @return
+	 */
+	public static boolean isImage(String ext,String contentType){
+		String exts= properties.getProperty("image.ext");
+		String types= properties.getProperty("image.type");
+		List<String> containExts = Arrays.asList(exts.split(",")) ;
+		List<String> containTypes = Arrays.asList(types.split(",")) ;
+		if( containExts.contains(ext) && containTypes.contains(contentType))
+			return true;
+		return false;
+	}
+	/**
+	 * 判断文件是否是图片
+	 * @param pics
+	 * @return ture：图片；false：非图片格式
+	 */
+	public static boolean isImage(MultipartFile pics){
+		if( pics==null ||pics.getSize()<=0)
+			return false;
+		String ext = ServiceUtils.getExtFromFileName(pics.getOriginalFilename()).toLowerCase();
+		String contentType = pics.getContentType().toLowerCase();
+		String exts= properties.getProperty("image.ext");
+		String types= properties.getProperty("image.type");
+		List<String> containExts = Arrays.asList(exts.split(",")) ;
+		List<String> containTypes = Arrays.asList(types.split(",")) ;
+		if( containExts.contains(ext) && containTypes.contains(contentType))
+			return true;
+		return false;
+	}
+	/**
+	 * 判断多个文件是否都是图片
+	 * @param pics
+	 * @return ture：图片；false：非图片格式
+	 */
+	public static boolean isImage(List<MultipartFile> pics) {
+		if( pics!=null &&pics.size() > 0)
+		{
+			for( int i =0 ;i<pics.size();i++)
+				if( !isImage(pics.get(i)))
+					return false;
+			return true;
+		}else
+			return false;
+	}
 	/**
 	 * 判断是否是有效字符串。
 	 * @param str 字符串
@@ -43,7 +113,7 @@ public class ValidateUtil {
 		return true;
 	}
 	/**
-	 * 校验密码
+	 * 校验密码，规定长度6-15非空有效字符串。
 	 * @param password 密码
 	 * @return 长度6-15非空格字符，满足返回true，否则返回false
 	 */
@@ -51,7 +121,7 @@ public class ValidateUtil {
 		return validateLen(password, 6, 15);
 	}
 	/**
-	 * 校验邮箱格式
+	 * 校验邮箱格式,必修满足邮箱格式才可以成功。
 	 * @param email 邮箱
 	 * @return 符合格式返回true否则返回false
 	 */
@@ -64,4 +134,5 @@ public class ValidateUtil {
 			return false;
 		return true;
 	}
+	
 }

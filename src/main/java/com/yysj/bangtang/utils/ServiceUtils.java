@@ -2,8 +2,12 @@ package com.yysj.bangtang.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 
 
 public class ServiceUtils {
@@ -58,5 +62,45 @@ public class ServiceUtils {
 		 */
 		public static void copyBean(Object dest,Object orig) throws Exception{
 			BeanUtils.copyProperties(dest, orig);
+		}
+		/**
+		 * 从文件名中获取文件的后缀名，入a.jpg，返回结果jpg
+		 * @param fileName
+		 * @return
+		 */
+		public static String getExtFromFileName(String fileName){
+			
+			return fileName.substring(fileName.lastIndexOf(".")+1);
+		}
+		/**
+		 * 返回uuid
+		 * @return 大写字符的uuid值
+		 */
+		public static String getUuid() {
+			 return UUID.randomUUID().toString().replace("-", "").toUpperCase();
+		}
+		/**
+		 * 得到日期文件名，组成由sdf输出格式再加上当前毫秒数
+		 * @param sdf ,如果为null，则使用模式yyyyMMddhh
+		 * @return
+		 */
+		public static String getDateFileName(SimpleDateFormat sdf)
+		{
+			if( sdf==null)
+				sdf = new SimpleDateFormat("yyyyMMddhh");
+			
+			return sdf.format(new Date())+System.currentTimeMillis();
+		}
+		/**
+		 * 得到日期格式的文件目录
+		 * @param sdf ,如果为null，则使用模式yyyy/MM/dd/hh
+		 * @return 例如：2016/08/03
+		 */
+		public static String getDateFileDir(SimpleDateFormat sdf)
+		{
+			if( sdf==null)
+				sdf = new SimpleDateFormat("yyyy/MM/dd/hh");
+			
+			return sdf.format(new Date());
 		}
 }

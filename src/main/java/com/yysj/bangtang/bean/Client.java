@@ -7,6 +7,8 @@ public class Client {
 
     private String password;
 
+    private String token;
+
     private String nickname;
 
     private Integer gender;
@@ -14,6 +16,12 @@ public class Client {
     private String nation;
 
     private String picpath;
+
+    private Date activelasttime;
+
+    private String resetcode;
+
+    private String activecode;
 
     private Integer emailstatus;
 
@@ -37,6 +45,14 @@ public class Client {
 
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token == null ? null : token.trim();
     }
 
     public String getNickname() {
@@ -69,6 +85,30 @@ public class Client {
 
     public void setPicpath(String picpath) {
         this.picpath = picpath == null ? null : picpath.trim();
+    }
+
+    public Date getActivelasttime() {
+        return activelasttime;
+    }
+
+    public void setActivelasttime(Date activelasttime) {
+        this.activelasttime = activelasttime;
+    }
+
+    public String getResetcode() {
+        return resetcode;
+    }
+
+    public void setResetcode(String resetcode) {
+        this.resetcode = resetcode == null ? null : resetcode.trim();
+    }
+
+    public String getActivecode() {
+        return activecode;
+    }
+
+    public void setActivecode(String activecode) {
+        this.activecode = activecode == null ? null : activecode.trim();
     }
 
     public Integer getEmailstatus() {

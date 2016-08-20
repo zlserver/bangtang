@@ -1,94 +1,79 @@
 package com.yysj.bangtang.mobile.action;
+import java.io.File;
 
-import java.util.Date;
-
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.yysj.bangtang.bean.Client;
-import com.yysj.bangtang.bean.base.DateJsonValueProcessor;
+import com.yysj.bangtang.file.DefaultFileHandler;
+import com.yysj.bangtang.file.FileEntity;
+import com.yysj.bangtang.file.FileHandler;
+import com.yysj.bangtang.file.FilePath;
+import com.yysj.bangtang.file.FileXmlParser;
+import com.yysj.bangtang.mobile.ClientJson;
+import com.yysj.bangtang.mobile.MyStatus;
+import com.yysj.bangtang.myenum.OperationStatus;
 import com.yysj.bangtang.service.ClientService;
-import com.yysj.bangtang.utils.ServiceUtils;
-import com.yysj.bangtang.utils.SiteUtils;
+import com.yysj.bangtang.utils.Log;
+import com.yysj.bangtang.utils.TokenGenerator;
 import com.yysj.bangtang.utils.ValidateUtil;
-import com.yysj.bangtang.vo.ClientVo;
-import com.yysj.bangtang.vo.MyJsonFactory;
-import com.yysj.bangtang.vo.OperationStatus;
-
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
 @Controller
 @RequestMapping(value="/mobile/client/*")
 public class ClientAction {
 	
-	private ClientService clientService;
-	
-	public String editPic(){
-		
-		return "";
-	}
 	/**
-	 * 注册
-	 * @param vo  接受参数，接受email 和password
-	 * @param model 存放返回给页面端的内容
-	 * @return json类型字符串，如果成功status为1，否则失败
-	 * {
-	 *   "status":1   
-	 *   
-	 * }
-	 * @throws Exception
+	 * 文件保存路径读取接口
 	 */
-	@RequestMapping(value="register",method=RequestMethod.POST)
-	public String register(Client cl,Model model) throws Exception{
-
-		JSONObject regJson=null;
+	private FilePath filePath ;
+	/**
+	 * 文件处理接口
+	 */
+	private FileHandler fileHandler;
+	/**
+	 * 用户操作接口
+	 */
+	private ClientService clientService;
+	/**
+	 * 编辑用户头像
+	 * @param logo 头像图片
+	 * @param request 请求
+	 * @return
+	 */
+	@RequestMapping(value="editPic",method=RequestMethod.POST)  
+	public @ResponseBody ClientJson editPic(@RequestParam("logo")CommonsMultipartFile logo,HttpServletRequest request){
+		ClientJson cljson= new ClientJson();
+		String token =request.getParameter("token");  
+		String email =TokenGenerator.getEmail(token);
+		Client client =clientService.findByEmail(email);
 		
-		ClientVo vo = new ClientVo();
-		vo.setClient(cl);
-		//校验用户注册信息
-		if( vo.validateEmailAndPas()){
-			//邮箱是否存在
-			Client client =clientService.findByEmail(vo.getClient().getEmail());
-			if( client==null){
-				//保存用户
-				clientService.registerByEmail(vo.getClient().getEmail(), vo.getClient().getPassword());
-				regJson=MyJsonFactory.generator(OperationStatus.SUCCESS);
-			}else{
-				regJson=MyJsonFactory.generator(OperationStatus.CLIENT_EMAIL_EXIST);
+		//校验图片格式
+		if(ValidateUtil.isImage(logo)){
+			//头像保存路径
+			String dirpath = filePath.getPath(FilePath.FILE_ROOT);
+			File dir = new  File(dirpath);
+			String relativePath = filePath.getPath(FilePath.USER_PIC);
+			try {
+				
+				FileEntity fe = fileHandler.save(dir, relativePath, logo);
+				client.setPicpath(fe.getRelativePath());
+				clientService.updateClient(client);
+				cljson.setClient(client);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.error(this, "修改用户头像失败"+e);
+				cljson.setOperationStatus(OperationStatus.CLIENT_EDIT_PIC_ERROR);
 			}
 		}else{
-			regJson=MyJsonFactory.generator(OperationStatus.CLIENT_EMAIL_PASS_ERROR);
+			cljson.setOperationStatus(OperationStatus.IMAGE_TYPE_ERROR);
 		}
-		model.addAttribute("json", regJson);
-		return SiteUtils.getPage("json");
-	}
-	/**
-	 * 登录
-	 * @param email 邮箱
-	 * @param password 密码
-	 * @return
-	 * @throws Exception 
-	 */
-	@RequestMapping(value="login",method=RequestMethod.POST)
-	public String login(String email,String password,Model model) throws Exception{
-		JSONObject logJson=null;
-		//校验
-		if( ValidateUtil.validateEmail(email)&& ValidateUtil.validatePassword(password)){
-			Client cl= clientService.login(email, password);
-			if( cl!=null){
-				JsonConfig config=new JsonConfig();
-				config.registerJsonValueProcessor(Date.class,new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
-				logJson=MyJsonFactory.generator(OperationStatus.SUCCESS,cl,config);
-				model.addAttribute("json", logJson);
-				return SiteUtils.getPage("json");
-			}
-		}
-		logJson=MyJsonFactory.generator(OperationStatus.CLIENT_EMAIL_PASS_ERROR);
-		model.addAttribute("json", logJson);
-		return SiteUtils.getPage("json");
+		
+		return cljson;
 	}
 	
 	public ClientService getClientService() {
@@ -98,5 +83,20 @@ public class ClientAction {
 	public void setClientService(ClientService clientService) {
 		this.clientService = clientService;
 	}
+	public FilePath getFilePath() {
+		return filePath;
+	}
+	@Autowired
+	public void setFilePath(FilePath filePath) {
+		this.filePath = filePath;
+	}
+	public FileHandler getFileHandler() {
+		return fileHandler;
+	}
+	@Autowired
+	public void setFileHandler(FileHandler fileHandler) {
+		this.fileHandler = fileHandler;
+	}
+	
 	
 }

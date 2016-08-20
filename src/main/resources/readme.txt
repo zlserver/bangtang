@@ -1,15 +1,29 @@
 
 1.项目介绍
-2.github操作说明
-3.修改了
+使用spring4.2.7.RELEASE以便使用spring-redis
+
 
 移动端：
-登陆
-	 * @param email 邮箱
-	 * @param password 密码
-http://localhost:8080/bangtang/mobile/client/login.action
- 注册
-	 * @param vo  接受参数，接受email 和password
-	 * @param model 存放返回给页面端的内容
-http://localhost:8080/bangtang/mobile/client/register.action
+注册,七天激活时间
+	password：
+	email:
+http://localhost:8080/bangtang/mobile/common/register.action
 
+登录
+ 	   email 邮箱
+	 * password 密码
+http://localhost:8080/bangtang/mobile/common/login.action
+
+找回密码：
+参数email
+http://localhost:8080/bangtang/mobile/common/resPasLink/{email}.action
+
+激活邮箱
+参数 activeCode
+http://localhost:8080/bangtang/mobile/common/activeEmail/{activeCode}.action
+
+编辑头像
+参数
+   logo ：图片文件
+   token：token值
+http://localhost:8080/bangtang/mobile/client/editPic.action
