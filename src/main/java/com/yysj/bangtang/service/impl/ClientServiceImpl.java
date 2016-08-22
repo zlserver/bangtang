@@ -1,18 +1,26 @@
 package com.yysj.bangtang.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.yysj.bangtang.bean.Client;
 import com.yysj.bangtang.bean.ClientExample;
+import com.yysj.bangtang.common.QueryEntity;
 import com.yysj.bangtang.mapper.ClientMapper;
 import com.yysj.bangtang.myenum.EmailStateEnum;
 import com.yysj.bangtang.service.ClientService;
 import com.yysj.bangtang.service.EmailService;
 import com.yysj.bangtang.task.EmailTask;
+import com.yysj.bangtang.utils.GenericUtils;
 import com.yysj.bangtang.utils.ServiceUtils;
 import com.yysj.bangtang.utils.TokenGenerator;
 import com.yysj.bangtang.utils.ValidateUtil;
@@ -40,6 +48,29 @@ public class ClientServiceImpl  implements ClientService {
 		return null;
 	}
 
+	public Page<Client> getScrollData(List<QueryEntity> queryEntitys, int pageNumber, int pageSize){
+		
+		ClientExample example =GenericUtils.buildCriteriaFromBean(ClientExample.class, queryEntitys);
+		
+		PageHelper.startPage(pageNumber,pageSize); 
+		List<Client> listC=clientMapper.selectByExample(example);
+		
+		return (Page)listC;
+	}
+	
+	/**
+	 * 将字符串转换为首字母大写后面都是小写的格式
+	 * @param str 
+	 * @return 如：aDcDc 返回Adcdc
+	 */
+	private String formtStr(String str){
+		if(str!=null){
+			String pre=str.substring(0, 1);
+		    String suf= str.length()>1 ? str.substring(1):"";
+		    return pre.toUpperCase()+suf.toLowerCase();
+		}return null;
+		
+	}
 	public void registerByEmail(String email, String password)throws Exception {
 		// TODO Auto-generated method stub
 		//对密码进行加密
@@ -99,6 +130,8 @@ public class ClientServiceImpl  implements ClientService {
 		}
 		return 0;
 	}
+	
+	
 	
 	public ClientMapper getClientMapper() {
 		return clientMapper;

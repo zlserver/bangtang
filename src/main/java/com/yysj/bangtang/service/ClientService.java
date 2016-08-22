@@ -1,6 +1,11 @@
 package com.yysj.bangtang.service;
 
+import java.util.List;
+
+import com.github.pagehelper.Page;
 import com.yysj.bangtang.bean.Client;
+import com.yysj.bangtang.bean.ClientExample;
+import com.yysj.bangtang.common.QueryEntity;
 import com.yysj.bangtang.myenum.EmailStateEnum;
 
 public interface ClientService {
@@ -82,5 +87,13 @@ public interface ClientService {
 	 * -1：密码不满足要求
 	 */
 	public int resetPassword(String resetCode, String password);
-	
+	/**
+	 * 分页查询
+	 * @param queryEntitys 查询条件
+	 * @param pageNumber 页码
+	 * @param pageSize 每页最多值
+	 * @return
+	 */
+	public Page<Client> getScrollData(List<QueryEntity> queryEntitys, int pageNumber, int pageSize);
+		
 }
