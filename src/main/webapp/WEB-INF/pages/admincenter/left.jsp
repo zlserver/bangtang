@@ -15,47 +15,44 @@
 <script src="js/left_js/jquery.js" type="text/javascript"></script>
 <script src="js/left_js/jquery.cookie.js" type="text/javascript"></script>
 <script src="js/left_js/jquery.treeview.js" type="text/javascript"></script>
-<script type="text/javascript">
-	$(function() {
-		$("#browser").treeview();
-	});
-	var num=1;
-	setTimeout(function(){num=2},100);
-	alert(num);
-</script>
-<style>
-li{cursor:pointer;}
+	<script type="text/javascript">
+		$(function() {
+			$("#browser").treeview();
+		});
+	</script>
+	<style>
+li {
+	cursor:pointer;
+}
+a{
+text-decoration:none;
+}
 </style>
-</head>
-<body bgcolor="#CCCCCC">
-	<div id="main">
-		<ul id="browser" class="filetree">
-			<li><img src="images/left_picture/folder.gif" /> 用户管理</span>
-				<ul>
-					<li onClick='parent.window.set_content();'>用户列表<img
-						src="images/left_picture/file.gif" /></li>
-				</ul>
-				<ul>
-					<li onClick='parent.window.set_content();'>用户查询<img
-						src="images/left_picture/file.gif" /></li>
-				</ul>
-			</li>
+	</head>
+	
 
-			<li><img src="images/left_picture/folder.gif" /> 数据管理</span>
+	<base target="mainFrame">
+	<body bgcolor="#CCCCCC">
+<div id="main">
+<ul id="browser" class="filetree">
+<li><img src="../images/folder.gif" /> 用户管理</span>
+		<ul>
+		<li ><a href="user_new_cont.html">用户列表</a></li>
+		<li ><a href="user_search.html">用户查询</a></li>
+	</ul>
+	</li>
+<li><img src="../images/folder.gif" /> 数据管理</span>
+		<ul>
+		<li>管理1</li>
+		<li>管理2 </li>
+		<li><img src="../images/folder.gif" /> 管理3</span>
 				<ul>
-					<li>blabla</li>
-					<li>blabla</li>
-					<li><img src="images/left_picture/folder.gif" /> 管理1</span>
-						<ul>
-							<li>blabla</li>
-							<li>blabla</li>
-							<li>blabla</li>
-							<li>blabla</li>
-						</ul>
-					</li>
-				</ul>
+				<li>管理4</li>
+				<li>管理5 </li>
+				<li>管理6 </li>
+			</ul>
 			</li>
-		</ul>
-	</div>
+	</ul>
+	</li>
 </body>
 </html>
