@@ -9,7 +9,7 @@ public class TransactionTest {
 	private static ApplicationContext ac;
 	@Before
 	public void init(){
-		 ac = new ClassPathXmlApplicationContext("spring/bt-service.xml");
+		 ac = new ClassPathXmlApplicationContext("spring/bt-service.xml","spring/bt-redis.xml");
 	}
 	
 	

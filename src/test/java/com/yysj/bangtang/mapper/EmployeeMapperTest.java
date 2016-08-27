@@ -14,7 +14,7 @@ public class EmployeeMapperTest {
 	private static ApplicationContext ac;
 	@Before
 	public void init(){
-		 ac = new ClassPathXmlApplicationContext("spring/bt-service.xml");
+		 ac = new ClassPathXmlApplicationContext("spring/bt-service.xml","spring/bt-redis.xml");
 		 sqlSessionFactory= ac.getBean(SqlSessionFactory.class);
 	}
 	

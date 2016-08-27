@@ -30,10 +30,11 @@ public class ClientManageAction {
 		if( formbean.getQuery()!=null && formbean.getQuery().equalsIgnoreCase(QueryClientForm.QUERY_FLAGE)){
 			
 		}
-		
 		Page<Client> page=clientService.getScrollData(qes, formbean.getPageNumber(), formbean.getPageSize());
+		formbean.setPage(page);
 		
-		model.addAttribute("page", page);
+		System.out.println(" 当前页: "+formbean.getPageNum()+" 总页: "+formbean.getPages()+"  总记录: "+formbean.getTotal());
+		model.addAttribute("formbean", formbean);
 		return SiteUtils.getPage("client.list");
 	}
 	
