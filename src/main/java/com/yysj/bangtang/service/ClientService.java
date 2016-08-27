@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.github.pagehelper.Page;
 import com.yysj.bangtang.bean.Client;
-import com.yysj.bangtang.bean.ClientExample;
 import com.yysj.bangtang.common.QueryEntity;
 import com.yysj.bangtang.myenum.EmailStateEnum;
 

@@ -7,7 +7,7 @@
 %>
 <!DOCTYPE html>
 <head>
-<base href="<%=basePath%>" />
+<base href="<%=basePath%>" target="mainFrame" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>jQuery</title>
 <link rel="stylesheet" href="js/left_js/jquery.treeview.css" />
@@ -28,16 +28,14 @@ a{
 text-decoration:none;
 }
 </style>
-	</head>
+</head>
 	
-
-	<base target="mainFrame">
-	<body bgcolor="#CCCCCC">
+<body bgcolor="#CCCCCC">
 <div id="main">
 <ul id="browser" class="filetree">
 <li><img src="../images/folder.gif" /> 用户管理</span>
 		<ul>
-		<li ><a href="user_new_cont.html">用户列表</a></li>
+		<li ><a href="control/client/list.action">用户列表</a></li>
 		<li ><a href="user_search.html">用户查询</a></li>
 	</ul>
 	</li>
